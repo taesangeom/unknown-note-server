@@ -1,6 +1,6 @@
 package unknownnote.unknownnoteserver.config.security;
 
-import unknownnote.unknownnoteserver.api.repository.user.UserRefreshTokenRepository;
+import unknownnote.unknownnoteserver.api.repository_user.UserRefreshTokenRepository;
 import unknownnote.unknownnoteserver.config.properties.AppProperties;
 import unknownnote.unknownnoteserver.config.properties.CorsProperties;
 import unknownnote.unknownnoteserver.oauth.entity.RoleType;
@@ -32,7 +32,7 @@ import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsProperties corsProperties;
     private final AppProperties appProperties;
     private final AuthTokenProvider tokenProvider;
@@ -53,37 +53,37 @@ public class SecurityConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+                    .cors()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .accessDeniedHandler(tokenAccessDeniedHandler)
+                    .csrf().disable()
+                    .formLogin().disable()
+                    .httpBasic().disable()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                    .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
-                .authorizeRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-                .anyRequest().authenticated()
+                    .authorizeRequests()
+                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                    .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+                    .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+                    .anyRequest().authenticated()
                 .and()
-                .oauth2Login()
-                .authorizationEndpoint()
-                .baseUri("/oauth2/authorization")
-                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+                    .oauth2Login()
+                    .authorizationEndpoint()
+                    .baseUri("/oauth2/authorization")
+                    .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
-                .redirectionEndpoint()
-                .baseUri("/*/oauth2/code/*")
+                    .redirectionEndpoint()
+                    .baseUri("/*/oauth2/code/*")
                 .and()
-                .userInfoEndpoint()
-                .userService(oAuth2UserService)
+                    .userInfoEndpoint()
+                    .userService(oAuth2UserService)
                 .and()
-                .successHandler(oAuth2AuthenticationSuccessHandler())
-                .failureHandler(oAuth2AuthenticationFailureHandler());
+                    .successHandler(oAuth2AuthenticationSuccessHandler())
+                    .failureHandler(oAuth2AuthenticationFailureHandler());
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
