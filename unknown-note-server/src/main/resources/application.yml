@@ -1,3 +1,5 @@
+#version1
+
 #spring:
 #  profiles.active: local
 #  # 데이터 소스 설정
@@ -96,41 +98,80 @@
 #    authorizedRedirectUris:
 #      - http://localhost:3000/oauth/redirect
 
-server:
-  port: 8080
+
+# version2
+
+#server:
+#  port: 8080
+#
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          naver:
+#            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+#            tokenUri: https://nid.naver.com/oauth2.0/token
+#            userInfoUri: https://openapi.naver.com/v1/nid/me
+#            userNameAttribute: response
+#          kakao:
+#            authorizationUri: https://kauth.kakao.com/oauth/authorize
+#            tokenUri: https://kauth.kakao.com/oauth/token
+#            userInfoUri: https://kapi.kakao.com/v2/user/me
+#            userNameAttribute: id
+#        registration:
+#          google:
+#            client-id: '{구글 client-id}'
+#            client-secret: '{구글 client-secret}'
+#            scope: profile, email
+#          kakao:
+#            client-id: '{카카오 client-id}'
+#            client-secret: '{카카오 client-secret}'
+#            client-authentication-method: POST
+#            authorizationGrantType: authorization_code
+#            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+#            scope: profile_nickname, profile_image, account_email
+#            client-name: Kakao
+#          naver:
+#            client-id: '{네이버 client-id}'
+#            client-secret: '{네이버 client-secret}'
+#            authorizationGrantType: authorization_code
+#            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+#            scope: name, nickname, email, profile_image
+#            client-name: Naver
+
+
+# version 3
 
 spring:
   security:
     oauth2:
       client:
-        provider:
+        registration:
+          google:
+            client-id: [Google Client ID]
+            client-secret: [Google Client Secret]
+            scope: profile, email
+          kakao:
+            client-id: [Kakao Client ID]
+            client-secret: [Kakao Client Secret]
+            scope: profile_nickname, profile_image, account_email
+            client-name: Kakao
           naver:
-            authorizationUri: https://nid.naver.com/oauth2.0/authorize
-            tokenUri: https://nid.naver.com/oauth2.0/token
-            userInfoUri: https://openapi.naver.com/v1/nid/me
-            userNameAttribute: response
+            client-id: [Naver Client ID]
+            client-secret: [Naver Client Secret]
+            scope: name, email, profile_image
+            client-name: Naver
+        provider:
+          google:
+            authorizationUri: https://accounts.google.com/o/oauth2/auth
+            tokenUri: https://oauth2.googleapis.com/token
+            userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
           kakao:
             authorizationUri: https://kauth.kakao.com/oauth/authorize
             tokenUri: https://kauth.kakao.com/oauth/token
             userInfoUri: https://kapi.kakao.com/v2/user/me
-            userNameAttribute: id
-        registration:
-          google:
-            client-id: '{구글 client-id}'
-            client-secret: '{구글 client-secret}'
-            scope: profile, email
-          kakao:
-            client-id: '{카카오 client-id}'
-            client-secret: '{카카오 client-secret}'
-            client-authentication-method: POST
-            authorizationGrantType: authorization_code
-            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-            scope: profile_nickname, profile_image, account_email
-            client-name: Kakao
           naver:
-            client-id: '{네이버 client-id}'
-            client-secret: '{네이버 client-secret}'
-            authorizationGrantType: authorization_code
-            redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-            scope: name, nickname, email, profile_image
-            client-name: Naver
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
