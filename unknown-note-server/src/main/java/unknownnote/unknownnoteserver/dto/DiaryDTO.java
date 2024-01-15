@@ -1,5 +1,8 @@
 package unknownnote.unknownnoteserver.dto;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class DiaryDTO {
 
     private String dContent;
@@ -7,9 +10,7 @@ public class DiaryDTO {
     private Integer openable;
     private Integer userid; //User 테이블의 user_id 의 외래키
 
-    // 생성자
-    public DiaryDTO() {
-    }
+    //생성자는 lombok 대체
 
     // getter 와 setter
     public String getDContent() {

@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.repository.DiaryRepository;
 import unknownnote.unknownnoteserver.entity.DiaryEntity;
 import unknownnote.unknownnoteserver.dto.DiaryDTO;
+import unknownnote.unknownnoteserver.repository.UserRepository;
+import unknownnote.unknownnoteserver.entity.UserEntity;
 
 @Service
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+
     private final UserRepository userRepository; // User 테이블 Repository
 
     @Autowired

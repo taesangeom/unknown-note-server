@@ -12,21 +12,20 @@ public class DiaryEntity {
     @Column(name = "diary_id")
     private Integer diaryId;
 
-    @Column(name = "d_content")
+    @Column(name = "d_content", nullable = false)
     private String dContent;
 
+    @Column(name = "d_time", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp dTime;
     @Column(name = "d_tag", length = 50)
     private String dTag;
-
-    @Column(name = "openable")
-    private Integer openable;
-
-    @Column(name = "d_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp dTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity user;
+
+    @Column(name = "openable", nullable = false)
+    private Integer openable;
 
 
     public DiaryEntity() {
@@ -78,6 +77,18 @@ public class DiaryEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "DiaryEntity{" +
+                "diaryId=" + diaryId +
+                ", dContent='" + dContent + '\'' +
+                ", dTime=" + dTime +
+                ", dTag='" + dTag + '\'' +
+                ", user=" + user +
+                ", openable=" + openable +
+                '}';
     }
 }
 
