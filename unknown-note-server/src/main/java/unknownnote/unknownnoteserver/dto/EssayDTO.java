@@ -5,20 +5,17 @@ import java.time.LocalDateTime;
 public class EssayDTO {
 
     private Long essayId;
-    private String title;
-    private String content;
-    private Integer likes;
-    private String category;
-    private LocalDateTime time;
+    private String eTitle;
+    private String eContent;
+    private Integer eLikes;
+    private String eCategory;
+    private LocalDateTime eTime;
 
-    // Constructors, getters, and setters
+    // 생성자, getter 및 setter 메소드
 
     public EssayDTO() {
     }
 
-    // Include all arguments constructor if needed
-
-    // Getters and setters for all properties
     public Long getEssayId() {
         return essayId;
     }
@@ -27,43 +24,43 @@ public class EssayDTO {
         this.essayId = essayId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getETitle() {
+        return eTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setETitle(String eTitle) {
+        this.eTitle = eTitle;
     }
 
-    public String getContent() {
-        return content;
+    public String getEContent() {
+        return eContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setEContent(String eContent) {
+        this.eContent = eContent;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public Integer getELikes() {
+        return eLikes;
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+    public void setELikes(Integer eLikes) {
+        this.eLikes = eLikes;
     }
 
-    public String getCategory() {
-        return category;
+    public String getECategory() {
+        return eCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setECategory(String eCategory) {
+        this.eCategory = eCategory;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getETime() {
+        return eTime;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setETime(LocalDateTime eTime) {
+        this.eTime = eTime;
     }
 }
