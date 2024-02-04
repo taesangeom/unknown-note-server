@@ -1,19 +1,23 @@
 package unknownnote.unknownnoteserver.entity;
+
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import lombok.*;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user")
+@Data // Lombok 대체  getters, setters, toString, equals, hashCode
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer userId;
+    private Integer userid;
 
     @Column(name = "user_pwd", nullable = false)
-    private String userPwd;
+    private String userpwd;
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
@@ -25,105 +29,19 @@ public class UserEntity {
     private int gender;
 
     @Column(name = "made_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp madeDate;
+    private Timestamp madedate;
 
     @Column(name = "level", columnDefinition = "INT DEFAULT 0")
     private int level;
 
-    @Column(name = "social_id", nullable = false)
-    private String socialId;
+    @Column(name = "social_id")
+    private String socialid;
 
     @Column(name = "introduction")
     private String introduction;
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public int getBirth() {
-        return birth;
-    }
-
-    public void setBirth(int birth) {
-        this.birth = birth;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public Timestamp getMadeDate() {
-        return madeDate;
-    }
-
-    public void setMadeDate(Timestamp madeDate) {
-        this.madeDate = madeDate;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public String getSocialId() {
-        return socialId;
-    }
-
-    public void setSocialId(String socialId) {
-        this.socialId = socialId;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
-
-    // toString 메서드
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "userId=" + userId +
-                ", userPwd='" + userPwd + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", birth=" + birth +
-                ", gender=" + gender +
-                ", madeDate=" + madeDate +
-                ", level=" + level +
-                ", socialId='" + socialId + '\'' +
-                ", introduction='" + introduction + '\'' +
-                '}';
-    }
-
-
+    @Column(name = "method")
+    private String method;
 }
+
 
