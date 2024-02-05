@@ -99,7 +99,7 @@ public class DiaryServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
 
         // When
-        DiaryEntity result = diaryService.SaveNewDiary(diaryDTO, jwtToken);
+        DiaryEntity result = diaryService.SaveNewDiary(diaryDTO, userId);
 
         assertEquals(savedDiaryEntity, result);
 
@@ -153,7 +153,7 @@ public class DiaryServiceTest {
                 .thenReturn(recommendedDiary);
 
         // When (실행)
-        DiaryEntity result = diaryService.getRecommendedDiary(jwtToken, emotion);
+        DiaryEntity result = diaryService.getRecommendedDiary(userId, emotion);
 
         // Then (검증)
         assertEquals(recommendedDiary, result);

@@ -3,9 +3,13 @@ package unknownnote.unknownnoteserver.service;
 //import org.springframework.beans.factory.annotation.Autowired;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +30,6 @@ import unknownnote.unknownnoteserver.repository.UserViewedDiariesRepository;
 @Service
 public class DiaryService {
 
-
     private final DiaryRepository diaryRepository;
 
 
@@ -34,19 +37,21 @@ public class DiaryService {
 
     private final UserViewedDiariesRepository userViewedDiariesRepository;  //user가 본 일기관리 테이블
 
-    //@Value("${jwt.secret}")   // ******************************************중요**********************
-    //private String jwtSecret; // application.properties 명시
-    private String jwtSecret="kwangwoonboys2019DepartmentofSoftwareGraduationProject";
-    // 테스트시 mock 객체에 Value 주입 불가로 테스트시에만 직접 명시해줌. 실제 운영은 @value 주입 해보겠음
+    @Value("${jwt.secret}")   // ******************************************중요**********************
+    private String jwtSecret; //비밀 키
 
-    private int jwtDecoder(String jwtToken) {
+    public Jws<Claims> tokenValidation(String token) throws JwtException {
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         try {
-            String token;
-            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
-                token = jwtToken.replace("Bearer ", "");
-            } else {
-                token=jwtToken;
-            }
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token); //토큰 검증
+        }catch(JwtException e){
+            throw new IllegalStateException("JWT token validation failed : ", e);
+        }
+    }
+
+    public int jwtDecoder(String token) {
+        try {
+
             // JWT 토큰 해석하여 userid 추출
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtSecret.getBytes())
@@ -59,16 +64,15 @@ public class DiaryService {
         } catch (Exception e) {
             // 토큰 해석 중 예외가 발생
             //e.printStackTrace(); // 실제 운영에서는 로깅 등으로 대체할 예정
-            return -55; // 예외 발생
+            throw new JwtException("Error during Decoding token :",e);
         }
     }
 
-    public DiaryEntity SaveNewDiary(DiaryDTO diaryDTO, String jwtToken) {
+
+    public DiaryEntity SaveNewDiary(DiaryDTO diaryDTO, int userId) {
         try {
-            int userId=jwtDecoder(jwtToken);
-            if(userId==-55){
-                return null;
-            }
+
+            int userid = userId;
 
             DiaryEntity diaryEntity = new DiaryEntity();
             diaryEntity.setDcontent(diaryDTO.getDcontent());
@@ -77,7 +81,7 @@ public class DiaryService {
             diaryEntity.setDtime(Timestamp.valueOf(LocalDateTime.now()));
 
             // 사용자 정보를 가져와서 설정
-            UserEntity userEntity = userRepository.findById(userId).orElse(null);
+            UserEntity userEntity = userRepository.findById(userid).orElse(null);
 
             if (userEntity != null) {
                 diaryEntity.setUser(userEntity);
@@ -87,24 +91,28 @@ public class DiaryService {
             return null;
         } catch (Exception e) {
             // 예외 처리
-            return null;
+            throw new RuntimeException("Unexpected Error during SaveNewDiary()");
         }
     }
 
-    public DiaryEntity getRecommendedDiary(String jwtToken, String emotion) {
+    public DiaryEntity getRecommendedDiary(int userId, String emotion) {
         try {
-            // JWT 토큰 해석하여 사용자 ID 추출
-            int userId = jwtDecoder(jwtToken);
 
             // 사용자가 이미 본 일기의 ID 목록 가져오기
             List<Integer> viewedDiaryIds = new ArrayList<>(userViewedDiariesRepository.findViewedDiaryIds(userId));
 
-            if (viewedDiaryIds == null) {
+            /*if (viewedDiaryIds.isEmpty()) {
                 viewedDiaryIds = new ArrayList<>(); // 만약 null이면 빈 목록으로 초기화
-            }
+            }*/
             //System.out.println("findRecommendedDiary before viewdDiaryIds: " + viewedDiaryIds);
             // 감정(emotion) 및 최근 일기를 기반으로 추천할 일기 가져오기
-            DiaryEntity recommendedDiary = diaryRepository.findRecommendedDiary(emotion, viewedDiaryIds);
+
+            DiaryEntity recommendedDiary = null;
+            if(!viewedDiaryIds.isEmpty()){
+                recommendedDiary = diaryRepository.findRecommendedDiary(emotion, viewedDiaryIds);
+            }else{
+                recommendedDiary = diaryRepository.findDiariesEmptySituation(emotion);
+            }
 
             // 추천된 일기를 사용자가 본 일기 목록에 추가
             if (recommendedDiary != null) {
@@ -121,17 +129,15 @@ public class DiaryService {
 
                 return recommendedDiary;
 
-            }else {
-                System.out.println("No recommended diary found for emotion: " + emotion);
+            } else {
+                System.err.println("Valueable recommendedDiary for emotion: " + emotion + "is NULL");
                 return null;
             }
         } catch (Exception e) {
             // 예외 처리
             System.err.println("An error occurred while getting recommended diary: " + e.getMessage());
-            //e.printStackTrace();
-            return null;
+            throw new RuntimeException("error occurred while getting recommended diary",e);
         }
     }
-
 }
 

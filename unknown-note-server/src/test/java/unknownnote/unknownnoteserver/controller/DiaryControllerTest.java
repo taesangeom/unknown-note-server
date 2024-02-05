@@ -53,7 +53,7 @@ public class DiaryControllerTest {
 
         String jwtToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEyMywiaWF0IjoxNTE2MjM5MDIyfQ.rpxz19ZVQjAkw2E7D6F5DtAr7YrMrcmUwaTbhl4N3_E"; // Add a valid JWT token
 
-        when(diaryService.SaveNewDiary(any(DiaryDTO.class), any(String.class))).thenReturn(new DiaryEntity());
+        when(diaryService.SaveNewDiary(any(DiaryDTO.class), any(int.class))).thenReturn(new DiaryEntity());
 
         // When
         mockMvc.perform(post("/diary/save")
@@ -65,7 +65,7 @@ public class DiaryControllerTest {
                 .andReturn();
 
         // Then
-        verify(diaryService, times(1)).SaveNewDiary(any(DiaryDTO.class), any(String.class));
+        verify(diaryService, times(1)).SaveNewDiary(any(DiaryDTO.class), any(int.class));
 
         // Additional checks if needed
     }
@@ -98,7 +98,7 @@ public class DiaryControllerTest {
         dummyDiary.setOpenable(1);
         // Set other fields as needed
 
-        when(diaryService.getRecommendedDiary(any(String.class), any(String.class))).thenReturn(dummyDiary);
+        when(diaryService.getRecommendedDiary(any(int.class), any(String.class))).thenReturn(dummyDiary);
 
         // When and Then
         mockMvc.perform(get("/diary")
@@ -113,7 +113,7 @@ public class DiaryControllerTest {
                 .andReturn();
 
         // Verify that the service method is called
-        verify(diaryService, times(1)).getRecommendedDiary(any(String.class), any(String.class));
+        verify(diaryService, times(1)).getRecommendedDiary(any(int.class), any(String.class));
     }
 
 }
