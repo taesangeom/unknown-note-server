@@ -5,10 +5,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import unknownnote.unknownnoteserver.dto.GoogleResponse;
-import unknownnote.unknownnoteserver.dto.KakaoResponse;
-import unknownnote.unknownnoteserver.dto.NaverResponse;
-import unknownnote.unknownnoteserver.dto.OAuth2Response;
+import unknownnote.unknownnoteserver.dto.*;
 
 // 이 CustomOAuth2UserService를 securityconfig의 .oauth2Login()에 등록해야 사용 가능한다.
 @Service
@@ -45,6 +42,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             return null;
         }
+
+        // 사용자가 겹치지 않도록 우리 서버에서 관리할 수 있는 username을 만든다.
+        // -> 수정: username이 아닌 ProviderId, id, email을 통해 사용자를 구분하도록 변경
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
         UserEntity existData = userRepository.findByUsername(username);
 
@@ -63,6 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole("ROLE_USER");
 
+            // userDTO를 넘겨주면 로그인 성공
             return new CustomOAuth2User(userDTO);
         }
         else {
