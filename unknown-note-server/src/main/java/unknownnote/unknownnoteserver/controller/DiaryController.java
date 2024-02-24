@@ -118,7 +118,7 @@ public class DiaryController {
                 diaryInfo.put("userid", recommendation.getUser().getUserid());
                 diaryInfo.put("openable", recommendation.getOpenable());
 
-                response.put("diary", diaryInfo);
+                response.put("data", diaryInfo);
 
                 return ResponseEntity.ok(response); //일기 로딩 성공
             } else {
