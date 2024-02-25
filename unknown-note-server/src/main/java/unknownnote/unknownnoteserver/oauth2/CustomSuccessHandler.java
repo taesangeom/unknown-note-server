@@ -1,6 +1,7 @@
 package unknownnote.unknownnoteserver.oauth2;
 
 
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import unknownnote.unknownnoteserver.dto.CustomOAuth2User;
 import unknownnote.unknownnoteserver.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 @Component
-public class CustomSuccessHandler {
+public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
 
     public CustomSuccessHandler(JWTUtil jwtUtil) {

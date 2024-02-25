@@ -19,7 +19,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         this.userRepository = userRepository;
     }
 
-    //
+    // AccessToken을 사용하여 사용자 정보를 조회하고, 각 제공업체의 API를 호출하여 사용자 정보를 조회하는 로직
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
@@ -46,6 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
+        // 여기서부터 사용자 정보(제공업체명, 고유 ID, 이메일 등)를 처리하는 로직 시작
         // 사용자가 겹치지 않도록 우리 서버에서 관리할 수 있는 username을 만든다.
         // -> 수정: username이 아닌 ProviderId, id, email을 통해 사용자를 구분하도록 변경
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
