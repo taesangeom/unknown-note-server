@@ -16,12 +16,14 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+// componet로 등록하는 이유 : security config에서 사용하기 위함
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    // JWTUtil을 주입받아서 사용
     private final JWTUtil jwtUtil;
 
     public CustomSuccessHandler(JWTUtil jwtUtil) {
-
+        // 내부 필드 변수에 초기화
         this.jwtUtil = jwtUtil;
     }
 
