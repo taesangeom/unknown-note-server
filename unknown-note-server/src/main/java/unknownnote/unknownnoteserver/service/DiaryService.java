@@ -37,7 +37,7 @@ public class DiaryService {
 
     private final UserViewedDiariesRepository userViewedDiariesRepository;  //user가 본 일기관리 테이블
 
-    @Value("${jwt.secret}")   // ******************************************중요**********************
+    @Value("${jwt.secret}") // ******************************************중요**********************
     private String jwtSecret; //비밀 키
 
     public Jws<Claims> tokenValidation(String token) throws JwtException {
