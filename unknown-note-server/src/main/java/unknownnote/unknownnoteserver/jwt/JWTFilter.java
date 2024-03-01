@@ -14,7 +14,9 @@ import unknownnote.unknownnoteserver.dto.UserDTO;
 
 import java.io.IOException;
 
-
+// 스프링 시큐리티 filter chain 요청에 담긴 JWT를 검증하기 위한 필터
+// 이 필터를 통해 요청 쿠키에 JWT가 존재하는 경우, JWT를 검증하고 강제로 SecurityContextHolder에 세션을 생성
+// 이 세션은 STATLESS 상태로 관리되기 때문에 해당 요청이 끝나면 소멸됨
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
 
@@ -40,53 +42,55 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+        // Cookie들을 request에서 불러온 뒤, Authorization key에 담긴 쿠키를 찾음
         String authorization = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
-
+            // Authorization 키를 가진 쿠키를 찾아서 authorization 변수에 담음
             if (cookie.getName().equals("Authorization")) {
 
                 authorization = cookie.getValue();
             }
         }
 
-        //Authorization 헤더 검증
+        // Authorization 헤더 검증
         if (authorization == null) {
 
             System.out.println("token null");
             filterChain.doFilter(request, response);
 
-            //조건이 해당되면 메소드 종료 (필수)
+            // 조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        //토큰
+        // 토큰
         String token = authorization;
 
+        // 토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
 
             System.out.println("token expired");
             filterChain.doFilter(request, response);
 
-            //조건이 해당되면 메소드 종료 (필수)
+            // 조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        //토큰에서 username과 role 획득
+        // 토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
-        //userDTO를 생성하여 값 set
+        // userDTO를 생성하여 값 set
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername(username);
         userDTO.setRole(role);
 
-        //UserDetails에 회원 정보 객체 담기
+        // UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
 
-        //스프링 시큐리티 인증 토큰 생성
+        // 스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        //세션에 사용자 등록
+        // 세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
