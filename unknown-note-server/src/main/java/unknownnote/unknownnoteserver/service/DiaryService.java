@@ -1,12 +1,6 @@
 package unknownnote.unknownnoteserver.service;
 
-//import org.springframework.beans.factory.annotation.Autowired;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -36,37 +30,6 @@ public class DiaryService {
     private final UserRepository userRepository; // User 테이블 Repository
 
     private final UserViewedDiariesRepository userViewedDiariesRepository;  //user가 본 일기관리 테이블
-
-    @Value("${jwt.secret}") // ******************************************중요**********************
-    private String jwtSecret; //비밀 키
-
-    public Jws<Claims> tokenValidation(String token) throws JwtException {
-        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
-        try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token); //토큰 검증
-        }catch(JwtException e){
-            throw new IllegalStateException("JWT token validation failed : ", e);
-        }
-    }
-
-    public int jwtDecoder(String token) {
-        try {
-
-            // JWT 토큰 해석하여 userid 추출
-            Claims claims = Jwts.parser()
-                    .setSigningKey(jwtSecret.getBytes())
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            int userId = claims.get("userid", Integer.class); // 추출한 userid 값
-            return userId;
-
-        } catch (Exception e) {
-            // 토큰 해석 중 예외가 발생
-            //e.printStackTrace(); // 실제 운영에서는 로깅 등으로 대체할 예정
-            throw new JwtException("Error during Decoding token :",e);
-        }
-    }
 
 
     public DiaryEntity SaveNewDiary(DiaryDTO diaryDTO, int userId) {
@@ -101,11 +64,6 @@ public class DiaryService {
             // 사용자가 이미 본 일기의 ID 목록 가져오기
             List<Integer> viewedDiaryIds = new ArrayList<>(userViewedDiariesRepository.findViewedDiaryIds(userId));
 
-            /*if (viewedDiaryIds.isEmpty()) {
-                viewedDiaryIds = new ArrayList<>(); // 만약 null이면 빈 목록으로 초기화
-            }*/
-            //System.out.println("findRecommendedDiary before viewdDiaryIds: " + viewedDiaryIds);
-            // 감정(emotion) 및 최근 일기를 기반으로 추천할 일기 가져오기
 
             DiaryEntity recommendedDiary = null;
             if(!viewedDiaryIds.isEmpty()){

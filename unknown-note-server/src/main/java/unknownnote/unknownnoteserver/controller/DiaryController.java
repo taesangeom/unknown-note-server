@@ -17,14 +17,15 @@ import unknownnote.unknownnoteserver.service.DiaryService;
 import unknownnote.unknownnoteserver.dto.DiaryDTO;
 import unknownnote.unknownnoteserver.entity.DiaryEntity;
 
-//import java.sql.SQLException;
-
 
 @RestController
 @RequestMapping("/diary")
 public class DiaryController {
 
     private final DiaryService diaryService;
+
+    @Autowired
+    private JwtHandler jwtHandler;
     private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
     @Autowired
@@ -45,8 +46,8 @@ public class DiaryController {
                 token=jwtToken;
             }
 
-            diaryService.tokenValidation(token); //예외 1 가능
-            int userId=diaryService.jwtDecoder(token); //예외 2 가능
+            jwtHandler.tokenValidation(token); //예외 1 가능
+            int userId=jwtHandler.jwtDecoder(token); //예외 2 가능
 
 
             DiaryEntity savedDiary=diaryService.SaveNewDiary(diaryDTO,userId);
@@ -91,8 +92,8 @@ public class DiaryController {
                 token=jwtToken;
             }
 
-            diaryService.tokenValidation(token); //예외 1 가능
-            int userId=diaryService.jwtDecoder(token); //예외 2 가능
+            jwtHandler.tokenValidation(token); //예외 1 가능
+            int userId=jwtHandler.jwtDecoder(token); //예외 2 가능
 
 
             List<String> emotionList = Arrays.asList("happy", "love", "expect","thanks","anger", "fear", "sad", "regret");
