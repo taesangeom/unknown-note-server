@@ -24,7 +24,7 @@ public class GoogleUserInfoProvider implements UserInfoProvider {
             UserEntity user = new UserEntity();
             user.setEmail(userJson.getString("email"));
             user.set("google");
-            user.setProviderId(userJson.getString("sub"));
+            user.setProviderId(userJson.getString("sub")); // -> sub가 고유한 값인지 확인이 어렵기 때문에 google은 email을 사용해서 유저 판단
             return user;
         }
         return null;
