@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
+
 
 import unknownnote.unknownnoteserver.entity.UserViewedDiariesEntity;
 import unknownnote.unknownnoteserver.entity.UserViewedDiariesId;
@@ -57,6 +59,28 @@ public class DiaryService {
             throw new RuntimeException("Unexpected Error during SaveNewDiary()");
         }
     }
+
+    public DiaryEntity updateDiary(int diaryId, String dContent, int Openable, int userId) {
+        Optional<DiaryEntity> diaryOptional = diaryRepository.findById(diaryId);
+        if (diaryOptional.isPresent()) {
+            DiaryEntity diaryEntity = diaryOptional.get();
+
+            if (diaryEntity.getUser().getUserid() == userId) {
+
+                diaryEntity.setDcontent(dContent);
+                diaryEntity.setOpenable(Openable);
+
+                return diaryRepository.save(diaryEntity);
+            } else {
+                System.err.println("Userid not match during changing diary");
+                return null;
+            }
+        } else {
+            System.err.println("Requested diaryid do not exists");
+            return null;
+        }
+    }
+
 
     public DiaryEntity getRecommendedDiary(int userId, String emotion) {
         try {

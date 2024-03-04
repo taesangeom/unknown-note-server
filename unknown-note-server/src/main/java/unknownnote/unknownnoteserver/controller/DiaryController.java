@@ -33,7 +33,7 @@ public class DiaryController {
         this.diaryService = diaryService;
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Object> saveDiaryEntry(@RequestBody DiaryDTO diaryDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         try {
             logger.debug("Received diaryDTO: {}", diaryDTO); // 로깅 추가
@@ -73,9 +73,51 @@ public class DiaryController {
                     .body("{\"code\": 2000, \"message\": \" Unexpected Error during SaveNewDiary()\"}");
         }catch(Exception e){
             //e.printStackTrace(); // 운영시는 가릴것
-            logger.error("Unexpected error", e); // 예외 발생 시 로깅
+            logger.error("Unexpected error during saving diary", e); // 예외 발생 시 로깅
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 4000, \"message\": \"Unexpected error\"}");
+                    .body("{\"code\": 4000, \"message\": \"Unexpected error during saving diary\"}");
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<Object> changeDiary(@RequestBody Map<String, Object> requestBody, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken){
+        try {
+            int openable = (int) requestBody.get("openable");
+            String dcontent = (String) requestBody.get("dcontent");
+            int diaryid = (Integer) requestBody.get("diaryid");
+
+            String token;
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                token = jwtToken.replace("Bearer ", "");
+            } else {
+                token = jwtToken;
+            }
+
+            jwtHandler.tokenValidation(token); //예외 1 가능
+            int userid = jwtHandler.jwtDecoder(token); //예외 2 가능
+
+            DiaryEntity changedDiary = diaryService.updateDiary(diaryid,dcontent,openable,userid);
+            if(changedDiary!=null){
+                //update 성공
+                return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Diary updated succesfully\"}");
+            }else{
+                //update 실패
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("{\"code\": 1002, \"message\": \"Diary update failed\"}");
+            }
+        }catch(IllegalStateException e){
+            logger.error("jwtToken is not in proper form / Outdated", e); // 예외 발생 시 로깅
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"code\": 2000, \"message\": \"JwtToken is not in proper form / Outdated\"}");
+        }catch(JwtException e){
+            logger.error("Error during Decoding Token", e); // 예외 발생 시 로깅
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"code\": 2000, \"message\": \"Error during Decoding Token\"}");
+        } catch(Exception e){
+            //e.printStackTrace(); // 운영시는 가릴것
+            logger.error("Unexpected error during changediary()", e); // 예외 발생 시 로깅
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"code\": 4000, \"message\": \"Unexpected error during updating diary\"}");
         }
     }
 
