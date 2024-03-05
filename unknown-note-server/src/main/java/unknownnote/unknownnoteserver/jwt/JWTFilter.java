@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import unknownnote.unknownnoteserver.dto.CustomOAuth2User;
 import unknownnote.unknownnoteserver.dto.UserDTO;
 
 import java.io.IOException;

@@ -2,7 +2,6 @@ package unknownnote.unknownnoteserver.oauth2;
 
 
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import unknownnote.unknownnoteserver.dto.CustomOAuth2User;
 import unknownnote.unknownnoteserver.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

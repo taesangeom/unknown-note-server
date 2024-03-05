@@ -1,6 +1,7 @@
 package unknownnote.unknownnoteserver.util.providers;
 
-import net.minidev.json.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import unknownnote.unknownnoteserver.entity.UserEntity;
@@ -14,20 +15,22 @@ public class KakaoUserInfoProvider implements UserInfoProvider {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        HttpEntity<String> entity = new HttpEntity<>("", headers); // GET 요청이므로 본문은 비움
 
         ResponseEntity<String> response = restTemplate.exchange(apiURL, HttpMethod.GET, entity, String.class);
 
         if(response.getStatusCode() == HttpStatus.OK) {
-            JSONObject userJson = new JSONObject(response.getBody());
-            JSONObject properties = userJson.getJSONObject("properties");
-            JSONObject kakaoAccount = userJson.getJSONObject("kakao_account");
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(response.getBody());
 
-            UserEntity user = new UserEntity();
-            user.setEmail(kakaoAccount.getString("email"));
-            user.setProvider("kakao");
-            user.setProviderId(String.valueOf(userJson.getLong("id")));
-            return user;
+                UserEntity user = new UserEntity();
+                user.setId(rootNode.get("id").asLong()); // 사용자 ID를 문자열로 저장
+
+                return user;
+            } catch (Exception e) {
+                e.printStackTrace(); // 예외 처리
+            }
         }
         return null;
     }
