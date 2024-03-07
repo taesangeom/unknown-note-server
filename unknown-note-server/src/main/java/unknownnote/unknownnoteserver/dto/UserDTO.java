@@ -9,9 +9,10 @@ import lombok.Setter;
 public class UserDTO {
 
     private String role; // role 값
-    private String name; // 사용자 ID
-    private String username; // 우리 서버에서 만들 username값
-    private String email; // 사용자 email
+    //private String name; // 사용자 ID
+    //private String username; // 우리 서버에서 만들 username값
+    //private String email; // 사용자 email
+    private String UserId; // 사용자 ID
     private String provider; // 제공자
-    private Long providerId; // 제공자 ID
+    private String SocialId; // 소셜 ID
 }

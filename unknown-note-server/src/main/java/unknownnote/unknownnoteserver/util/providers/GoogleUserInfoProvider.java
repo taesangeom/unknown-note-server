@@ -26,7 +26,7 @@ public class GoogleUserInfoProvider implements UserInfoProvider {
                 JsonNode rootNode = mapper.readTree(response.getBody());
 
                 UserEntity user = new UserEntity();
-                user.setId(rootNode.get("email").asLong()); // 이메일 정보 추출
+                user.setSocialId(rootNode.get("email").asText()); // 이메일 정보 추출
 
                 return user;
             } catch (Exception e) {

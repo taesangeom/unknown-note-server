@@ -27,7 +27,7 @@ public class NaverUserInfoProvider implements UserInfoProvider {
                 JsonNode responseNode = rootNode.get("response");
 
                 UserEntity user = new UserEntity();
-                user.setId(responseNode.get("id").asLong()); // 사용자 ID 설정
+                user.setSocialId(responseNode.get("id").asText()); // 사용자 ID 설정
 
                 return user; // 변환된 UserEntity 반환
 

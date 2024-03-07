@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<UserEntity, Long> { // 해당하는 entity 클래스와 id 타입인 long
     // findByUsername 커스텀 쿼리를 통해 내부에 username을 전달
     UserEntity findByUsername(String username);
+    UserEntity findByProviderAndSocialId(String provider, String socialId);
 }
