@@ -1,10 +1,8 @@
 package unknownnote.unknownnoteserver.repository;
 
-import org.springframework.stereotype.Repository;
-import  unknownnote.unknownnoteserver.entity.User;
+import unknownnote.unknownnoteserver.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    UserEntity findByMethodAndSocialId(String method, String socialId);
 }
