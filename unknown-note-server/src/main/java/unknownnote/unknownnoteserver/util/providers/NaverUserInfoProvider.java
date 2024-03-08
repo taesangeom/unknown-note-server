@@ -16,7 +16,7 @@ public class NaverUserInfoProvider implements UserInfoProvider {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity<String> entity = new HttpEntity<>("", headers); // GET 요청에는 본문이 필요하지 않습니다.
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(apiURL, HttpMethod.GET, entity, String.class);
 
@@ -27,14 +27,14 @@ public class NaverUserInfoProvider implements UserInfoProvider {
                 JsonNode responseNode = rootNode.get("response");
 
                 UserEntity user = new UserEntity();
-                user.setSocialId(responseNode.get("id").asText()); // 사용자 ID 설정
+                user.setSocialId(responseNode.get("id").asText());
 
-                return user; // 변환된 UserEntity 반환
+                return user;
 
             } catch (Exception e) {
-                e.printStackTrace(); // 예외 처리
+                e.printStackTrace();
             }
         }
-        return null; // 실패 시 null 반환
+        return null;
     }
 }

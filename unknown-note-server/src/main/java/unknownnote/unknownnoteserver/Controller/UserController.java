@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import unknownnote.unknownnoteserver.entity.UserEntity;
 import unknownnote.unknownnoteserver.service.UserService;
@@ -14,13 +14,14 @@ import java.util.Map;
 
 
 @RestController
-@ResponseBody
+@RequestMapping("/signin")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
-    @PostMapping("/signin")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> signin(@RequestBody Map<String, String> body) {
         String method = body.get("method");
         String accessToken = body.get("token");
 

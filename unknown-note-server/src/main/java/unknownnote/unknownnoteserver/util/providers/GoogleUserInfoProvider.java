@@ -1,6 +1,5 @@
 package unknownnote.unknownnoteserver.util.providers;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
@@ -16,7 +15,7 @@ public class GoogleUserInfoProvider implements UserInfoProvider {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity<String> entity = new HttpEntity<>("", headers); // 빈 문자열을 전달하는 것이 적절
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(apiURL, HttpMethod.GET, entity, String.class);
 
@@ -26,12 +25,11 @@ public class GoogleUserInfoProvider implements UserInfoProvider {
                 JsonNode rootNode = mapper.readTree(response.getBody());
 
                 UserEntity user = new UserEntity();
-                user.setSocialId(rootNode.get("email").asText()); // 이메일 정보 추출
+                user.setSocialId(rootNode.get("email").asText());
 
                 return user;
             } catch (Exception e) {
                 e.printStackTrace();
-                // 예외 처리 로직
             }
         }
         return null;

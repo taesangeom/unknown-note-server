@@ -25,11 +25,11 @@ public class KakaoUserInfoProvider implements UserInfoProvider {
                 JsonNode rootNode = mapper.readTree(response.getBody());
 
                 UserEntity user = new UserEntity();
-                user.setSocialId(rootNode.get("id").asText()); // 사용자 ID를 문자열로 저장
+                user.setSocialId(rootNode.get("id").asText());
 
                 return user;
             } catch (Exception e) {
-                e.printStackTrace(); // 예외 처리
+                e.printStackTrace();
             }
         }
         return null;

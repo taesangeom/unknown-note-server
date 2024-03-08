@@ -10,17 +10,6 @@ import unknownnote.unknownnoteserver.util.SocialUserInfoFetcher;
 
 @Service
 public class UserService {
-    // db에 접근해야 하므로 userRepository를 주입받음.
-//    @Autowired
-//    private final UserRepository userRepository;
-//
-//    private final JWTUtil jwtUtil;
-
-//    public UserService(UserRepository userRepository, JWTUtil jwtUtil) {
-//        // 주입, 초기화
-//        this.userRepository = userRepository;
-//        this.jwtUtil = jwtUtil;
-//    }
     @Autowired
     private UserRepository userRepository;
 
@@ -31,7 +20,6 @@ public class UserService {
     private SocialUserInfoFetcher fetcher;
 
     public UserEntity processLogin(String method, String accessToken) {
-        //SocialUserInfoFetcher fetcher = new SocialUserInfoFetcher();
         UserEntity userInfo = fetcher.fetchUserInfo(accessToken, method);
         UserEntity existData = userRepository.findByMethodAndSocialId(method, userInfo.getSocialId());
         if (existData == null) {
