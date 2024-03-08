@@ -1,46 +1,41 @@
 package unknownnote.unknownnoteserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import unknownnote.unknownnoteserver.entity.UserEntity;
-import unknownnote.unknownnoteserver.jwt.JWTUtil;
-import unknownnote.unknownnoteserver.repository.UserRepository;
-import unknownnote.unknownnoteserver.util.SocialUserInfoFetcher;
+import unknownnote.unknownnoteserver.service.UserService;
+
+import java.util.Map;
 
 
 @RestController
+@ResponseBody
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JWTUtil jwtUtil;
+    private UserService userService;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> login(@RequestBody String accessToken, @RequestParam String provider) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {
+        String method = body.get("method");
+        String accessToken = body.get("token");
 
-        // 1. Access token을 이용하여 제공업체로부터 유저 정보를 받아옴
-        SocialUserInfoFetcher fetcher = new SocialUserInfoFetcher();
-        UserEntity userInfo = fetcher.fetchUserInfo(accessToken, provider);
-
-        // 2. 제공업체와 id, email 같은 유니크한 키를 mysql 데이터베이스에 저장
-        UserEntity existData = userRepository.findByProviderAndSocialId(provider, userInfo.getSocialId());
-
-        if (existData == null) {
-            // 3. 최초 로그인인 경우, 데이터 베이스에 새로운 행을 만들어서 저장
-            UserEntity userEntity = new UserEntity();
-            userEntity.setProvider(provider);
-            userEntity.setSocialId(userInfo.getSocialId());
-            userEntity.setRole("ROLE_USER");
-            userRepository.save(userEntity);
+        // method와 accessToken 검증
+        if (method == null || accessToken == null) {
+            return new ResponseEntity<>(Map.of("code", 4000, "message", "요청 처리를 실패했습니다"), HttpStatus.BAD_REQUEST);
         }
 
-        // 4. user_id를 jwt로 암호화해서 프론트에 api 형식으로 넘겨줌
-        String jwtToken = jwtUtil.createJwt(userInfo.getUserId(), 60*60*60*60L);
-        return ResponseEntity.ok(jwtToken);
+        try {
+            UserEntity userEntity = userService.processLogin(method, accessToken);
+            String jwtToken = userService.generateJwtToken(userEntity.getUserId());
+
+            return new ResponseEntity<>(Map.of("code", 1000, "data", jwtToken), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("code", 4000, "message", "요청 처리를 실패했습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
