@@ -20,17 +20,17 @@ public class Diary {
     @Column(name = "d_content")
     private String dContent;
 
-    @Column(name = "d_time")
+    @Column(name = "d_time",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp diaryTime;
 
-    @Column(name = "d_tag")
+    @Column(name = "d_tag", columnDefinition = "VARCHAR(50) DEFAULT 'empty'")
     private String dTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "openable", nullable = false)
+    @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
     private int openable;
 
 }

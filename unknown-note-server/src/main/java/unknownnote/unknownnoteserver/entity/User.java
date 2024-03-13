@@ -19,27 +19,27 @@ public class User {
     @Column(name = "user_id")
     private int userId; // I 대분자로 바꿈(변경사항)
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname", columnDefinition = "VARCHAR(50) DEFAULT 'empty'")
     private String nickname;
 
-    @Column(name = "birth")
+    @Column(name = "birth", columnDefinition = "INT DEFAULT 0")
     private int birth;
 
-    @Column(name = "gender")
+    @Column(name = "gender", columnDefinition = "INT DEFAULT 0")
     private int gender;
 
-    @Column(name = "made_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "made_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp madedate;
 
-    @Column(name = "social_id")
+    @Column(name = "social_id", columnDefinition = "VARCHAR(250) DEFAULT 'empty'")
     private String socialId; // I 대분자로 바꿈(변경사항)
 
-    @Column(name = "introduction")
+    @Column(name = "introduction", columnDefinition = "VARCHAR(150) DEFAULT 'empty'")
     private String introduction;
 
-    @Column(name = "method")
+    @Column(name = "method", columnDefinition = "VARCHAR(100) DEFAULT 'empty'")
     private String method;
 
-    @Column(name = "profile_img_url")
+    @Column(name = "profile_img_url", columnDefinition = "VARCHAR(200) DEFAULT 'empty'")
     private String profileImgUrl;
 }
