@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import unknownnote.unknownnoteserver.entity.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    // 사용자 관련 커스텀 쿼리 method 등을 추가할 수 있음
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    // 필요한 경우 추가적인 쿼리 메소드를 여기에 정의할 수 있습니다.
 }

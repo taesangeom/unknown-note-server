@@ -1,66 +1,17 @@
 package unknownnote.unknownnoteserver.dto;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EssayDTO {
 
-    private Long essayId;
-    private String eTitle;
-    private String eContent;
-    private Integer eLikes;
-    private String eCategory;
-    private LocalDateTime eTime;
-
-    // 생성자, getter 및 setter 메소드
-
-    public EssayDTO() {
-    }
-
-    public Long getEssayId() {
-        return essayId;
-    }
-
-    public void setEssayId(Long essayId) {
-        this.essayId = essayId;
-    }
-
-    public String getETitle() {
-        return eTitle;
-    }
-
-    public void setETitle(String eTitle) {
-        this.eTitle = eTitle;
-    }
-
-    public String getEContent() {
-        return eContent;
-    }
-
-    public void setEContent(String eContent) {
-        this.eContent = eContent;
-    }
-
-    public Integer getELikes() {
-        return eLikes;
-    }
-
-    public void setELikes(Integer eLikes) {
-        this.eLikes = eLikes;
-    }
-
-    public String getECategory() {
-        return eCategory;
-    }
-
-    public void setECategory(String eCategory) {
-        this.eCategory = eCategory;
-    }
-
-    public LocalDateTime getETime() {
-        return eTime;
-    }
-
-    public void setETime(LocalDateTime eTime) {
-        this.eTime = eTime;
-    }
+    private String econtent; // 에세이 내용
+    private String etag; // 에세이 태그
+    private int openable; // 에세이 공개 여부
+    private int elikes; // 에세이 좋아요 수
+    private String ecategory; // 에세이 카테고리
 }

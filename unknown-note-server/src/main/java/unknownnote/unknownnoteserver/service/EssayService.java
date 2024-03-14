@@ -1,94 +1,81 @@
 package unknownnote.unknownnoteserver.service;
-
-import unknownnote.unknownnoteserver.dto.EssayDTO;
-import unknownnote.unknownnoteserver.entity.EssayEntity;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 import unknownnote.unknownnoteserver.repository.EssayRepository;
+import unknownnote.unknownnoteserver.entity.EssayEntity;
+import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.repository.UserRepository;
 import unknownnote.unknownnoteserver.entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import unknownnote.unknownnoteserver.entity.Category;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+@RequiredArgsConstructor
 @Service
 public class EssayService {
 
     private final EssayRepository essayRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public EssayService(EssayRepository essayRepository, UserRepository userRepository) {
-        this.essayRepository = essayRepository;
-        this.userRepository = userRepository;
-    }
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
-    public List<EssayDTO> getAllEssays() {
-        List<EssayEntity> essayEntities = essayRepository.findAll();
-        return essayEntities.stream()
-                .map(this::convertEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public EssayDTO createEssay(EssayDTO essayDTO) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(essayDTO.getUserId());
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
-            EssayEntity essayEntity = convertDTOToEntity(essayDTO);
-            essayEntity.setUser(userEntity);
-            EssayEntity savedEntity = essayRepository.save(essayEntity);
-            return convertEntityToDTO(savedEntity);
+    public Jws<Claims> tokenValidation(String token) throws JwtException {
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        } catch (JwtException e) {
+            throw new IllegalStateException("JWT token validation failed: ", e);
         }
-        return null;
     }
-
-    public EssayDTO getEssayById(Long essayId) {
-        Optional<EssayEntity> optionalEssayEntity = essayRepository.findById(essayId);
-        return optionalEssayEntity.map(this::convertEntityToDTO).orElse(null);
-    }
-
-    public EssayDTO updateEssay(Long essayId, EssayDTO updatedEssayDTO) {
-        Optional<EssayEntity> optionalEssayEntity = essayRepository.findById(essayId);
-        if (optionalEssayEntity.isPresent()) {
-            EssayEntity essayEntity = optionalEssayEntity.get();
-            EssayEntity updatedEntity = essayRepository.save(essayEntity);
-            return convertEntityToDTO(updatedEntity);
-        } else {
-            return null;
+    public int jwtDecoder(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(token).getBody();
+            return claims.get("userid", Integer.class);
+        } catch (Exception e) {
+            throw new JwtException("Error during Decoding token:", e);
         }
     }
 
-    public boolean deleteEssay(Long essayId) {
-        Optional<EssayEntity> optionalEssayEntity = essayRepository.findById(essayId);
-        if (optionalEssayEntity.isPresent()) {
-            essayRepository.deleteById(essayId);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private EssayDTO convertEntityToDTO(EssayEntity essayEntity) {
-        EssayDTO essayDTO = new EssayDTO();
-        essayDTO.setEssayId(essayEntity.getEssayId());
-        essayDTO.setETitle(essayEntity.getETitle());
-        essayDTO.setEContent(essayEntity.getEContent());
-        essayDTO.setETime(essayEntity.getETime());
-        essayDTO.setELikes(essayEntity.getELikes());
-        essayDTO.setECategory(essayEntity.getECategory());
-
-        essayDTO.setUserId(essayEntity.getUser().getUserId());
-        return essayDTO;
-    }
-
-    private EssayEntity convertDTOToEntity(EssayDTO essayDTO) {
+    public EssayEntity saveNewEssay(EssayDTO essayDTO, int userId) {
+        UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         EssayEntity essayEntity = new EssayEntity();
-        essayEntity.setETitle(essayDTO.getETitle());
-        essayEntity.setEContent(essayDTO.getEContent());
-        essayEntity.setELikes(essayDTO.getELikes());
-        essayEntity.setECategory(essayDTO.getECategory());
+        essayEntity.setEcontent(essayDTO.getEcontent());
+        //essayEntity.setEtag(essayDTO.getEtag());
+        essayEntity.setOpenable(essayDTO.getOpenable());
+        essayEntity.setEtime(Timestamp.valueOf(LocalDateTime.now()));
+        essayEntity.setElikes(essayDTO.getElikes()); // Assuming EssayDTO includes elikes
 
-        return essayEntity;
+        // Convert String to Category enum
+        try {
+            Category category = Category.valueOf(essayDTO.getEcategory().toUpperCase());
+            essayEntity.setEcategory(category);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid category: " + essayDTO.getEcategory(), e);
+        }
+
+        essayEntity.setUser(userEntity);
+        return essayRepository.save(essayEntity);
     }
+    //novel,poem,whisper 카테로리 정렬
+    public Page<EssayEntity> findEssaysByCategory(Category category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return essayRepository.findByEcategory(category, pageable);
+    }
+
+    public Page<EssayEntity> findPopularEssays(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return essayRepository.findEssaysOrderByLikes(pageable);
+    }
+
 }
