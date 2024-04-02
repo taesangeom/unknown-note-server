@@ -17,6 +17,7 @@ import unknownnote.unknownnoteserver.service.JwtService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/essay")
@@ -35,12 +36,10 @@ public class EssayController {
         this.jwtService = jwtService;
     }
 
+    // EssayController.java
     @PostMapping
     public ResponseEntity<Object> saveEssay(@RequestBody EssayDTO essayDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         try {
-            logger.debug("Received essayDTO: {}", essayDTO);
-            logger.debug("saveEssayEntry method is called!");
-
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
                 token = jwtToken.replace("Bearer ", "");
@@ -77,12 +76,12 @@ public class EssayController {
     }
 
     @PatchMapping
-    public ResponseEntity<Object> changeEssay(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken){
+    public ResponseEntity<Object> updateEssay(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken) {
         try {
             int openable = (int) requestBody.get("openable");
             String eContent = (String) requestBody.get("eContent");
             String eCategory = (String) requestBody.get("eCategory");
-            int essayid = (Integer) requestBody.get("essayid");
+            int essayId = (Integer) requestBody.get("essayId");
 
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -93,23 +92,23 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay changedEssay = essayService.updateEssay(essayid, eContent, eCategory, openable, userId);
-            if(changedEssay != null){
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, openable, userId);
+            if (updatedEssay != null) {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
-            }else{
+            } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("{\"code\": 1002, \"message\": \"Essay update failed\"}");
             }
-        }catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             logger.error("jwtToken is not in proper form / Outdated", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"code\": 2000, \"message\": \"JwtToken is not in proper form / Outdated\"}");
-        }catch(JwtException e){
+        } catch (JwtException e) {
             logger.error("Error during Decoding Token", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"code\": 2000, \"message\": \"Error during Decoding Token\"}");
-        } catch(Exception e){
-            logger.error("Unexpected error during changeEssay()", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error during updateEssay()", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"code\": 4000, \"message\": \"Unexpected error during updating essay\"}");
         }
