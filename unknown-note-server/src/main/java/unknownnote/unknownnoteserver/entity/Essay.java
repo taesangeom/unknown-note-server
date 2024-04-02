@@ -29,7 +29,7 @@ public class Essay {
     private int eLikes;
 
     @Column(name = "e_category")
-    private String eCategory;
+    private String ECategory;
 
     @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
     private int openable;

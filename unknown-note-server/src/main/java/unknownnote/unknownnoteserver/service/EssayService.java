@@ -29,17 +29,17 @@ public class EssayService {
     @Autowired
     private UserSubscribeRepository userSubscribeRepository;
 
-    public Essay saveNewEssay(EssayDTO essayDTO, int userId) {
+    public Essay saveNewEssay(EssayDTO essayDTO, int userId)  {
         try {
             int userid = userId;
 
             Essay essayEntity = new Essay();
-            essayEntity.setEContent(essayDTO.getEcontent());
+            essayEntity.setEContent(essayDTO.getEContent());
             essayEntity.setOpenable(essayDTO.getOpenable());
             essayEntity.setEssayTime(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
-            essayEntity.setELikes(essayDTO.getElikes());
+            essayEntity.setELikes(essayDTO.getELikes());
 
-            String category = essayDTO.getEcategory();
+            String category = essayDTO.getECategory();
             if (category != null) {
                 essayEntity.setECategory(category.toUpperCase());
             } else {
@@ -59,7 +59,6 @@ public class EssayService {
             throw new RuntimeException("Unexpected Error during saveNewEssay()", e);
         }
     }
-
     public Essay updateEssay(int essayId, String eContent, String eCategory, int openable, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
