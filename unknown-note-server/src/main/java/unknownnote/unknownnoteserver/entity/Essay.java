@@ -18,16 +18,24 @@ public class Essay {
 
     @Column(name = "e_title")
     private String eTitle;
+
     @Column(name = "e_content")
     private String eContent;
-    @Column(name = "e_time")
-    private Timestamp essayTime;
-    @Column(name = "e_likes")
-    private int eLikes;
-    @Column(name = "e_category")
 
-    private String eCategory;
-    @Column(name = "user_id")
-    private int userId;
+    @Column(name = "e_time",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Timestamp essayTime;
+
+    @Column(name = "e_likes", columnDefinition = "INT DEFAULT 0")
+    private int eLikes;
+
+    @Column(name = "e_category")
+    private String ECategory;
+
+    @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
+    private int openable;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
 
 }
