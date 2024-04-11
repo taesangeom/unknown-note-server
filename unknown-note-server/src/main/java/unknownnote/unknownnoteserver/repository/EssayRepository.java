@@ -8,14 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.entity.User;
-import unknownnote.unknownnoteserver.dto.MonthlyActivity;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EssayRepository extends JpaRepository<Essay, Integer> {
-
     @Query("SELECT COUNT(e) FROM Essay e WHERE e.user.userId = :userId")
     int countByUserId(int userId);
 
@@ -25,6 +22,11 @@ public interface EssayRepository extends JpaRepository<Essay, Integer> {
     // 특정 사용자의 에세이를 시간 기준으로 조회하는 예시 메서드
     List<Essay> findByUser_UserIdAndEssayTimeBetween(int userId, Timestamp start, Timestamp end);
     Page<Essay> findByECategoryOrderByEssayTimeDesc(String category, Pageable pageable);
-    List<Essay> findByUser(User user); // 추가된 코드
+    List<Essay> findByUser(User user);
+
+    @Query("SELECT e FROM Essay e WHERE e.essayId NOT IN ?1 ORDER BY e.essayTime DESC")
+        Essay findUnviewedEssay(List<Integer> viewedEssayIds);
+    @Query("SELECT e FROM Essay e ORDER BY e.essayTime DESC")
+        Essay findAnyEssay();
 
 }

@@ -4,12 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
-import unknownnote.unknownnoteserver.entity.Essay;
-import unknownnote.unknownnoteserver.entity.User;
-import unknownnote.unknownnoteserver.entity.UserSubscribe;
-import unknownnote.unknownnoteserver.repository.EssayRepository;
-import unknownnote.unknownnoteserver.repository.UserRepository;
-import unknownnote.unknownnoteserver.repository.UserSubscribeRepository;
+import unknownnote.unknownnoteserver.entity.*;
+import unknownnote.unknownnoteserver.repository.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,7 +25,10 @@ public class EssayService {
     @Autowired
     private UserSubscribeRepository userSubscribeRepository;
 
-    public Essay saveNewEssay(EssayDTO essayDTO, int userId)  {
+    @Autowired
+    private UserViewedEssaysRepository userViewedEssaysRepository;
+
+    public Essay saveNewEssay(EssayDTO essayDTO, int userId) {
         try {
             int userid = userId;
 
@@ -59,6 +58,7 @@ public class EssayService {
             throw new RuntimeException("Unexpected Error during saveNewEssay()", e);
         }
     }
+
     public Essay updateEssay(int essayId, String eContent, String eCategory, int openable, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
@@ -80,6 +80,7 @@ public class EssayService {
             return null;
         }
     }
+
     //좋아요 추가
     public Essay addLike(int essayId, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
@@ -92,10 +93,12 @@ public class EssayService {
         }
         return null;
     }
+
     //좋아요순
     public List<Essay> findAllLikedEssaysOrderByLikes(int userId) {
         return essayRepository.findEssaysOrderByLikes(userId);
     }
+
     //카테고리순 나열 poem, novel, whisper있음
     public Page<Essay> findEssaysByCategory(String category, int page) {
         Pageable pageable = PageRequest.of(page, 20);
@@ -113,5 +116,42 @@ public class EssayService {
             essays.addAll(subscribedUserEssays);
         }
         return essays;
+    }
+
+    public Essay getRecommendedEssay(int userId) {
+        try {
+            // 사용자가 이미 본 에세이의 ID 목록 가져오기
+            List<Integer> viewedEssayIds = userViewedEssaysRepository.findViewedEssayIds(userId);
+
+            Essay recommendedEssay = null;
+            if (!viewedEssayIds.isEmpty()) {
+                recommendedEssay = essayRepository.findUnviewedEssay(viewedEssayIds);
+            } else {
+                recommendedEssay = essayRepository.findAnyEssay();
+            }
+
+            // 추천된 에세이를 사용자가 본 에세이 목록에 추가
+            if (recommendedEssay != null) {
+                viewedEssayIds.add(recommendedEssay.getEssayId());
+
+                // 사용자가 이미 본 에세이를 UserViewedEssays 테이블에 기록
+                UserViewedEssaysEntity userViewedEssaysEntity = new UserViewedEssaysEntity();
+                UserViewedEssaysId userViewedEssaysId = new UserViewedEssaysId(userId, recommendedEssay.getEssayId());
+                userViewedEssaysEntity.setId(userViewedEssaysId);
+
+                // 생성된 UserViewedEssaysEntity를 저장한다.
+                userViewedEssaysRepository.save(userViewedEssaysEntity);
+
+                return recommendedEssay;
+            } else {
+                System.err.println("No unviewed essays found");
+                return null;
+            }
+        } catch (Exception e) {
+            // 예외 처리
+            System.err.println("An error occurred while getting recommended essay: " + e.getMessage());
+            throw new RuntimeException("error occurred while getting recommended essay", e);
+        }
+
     }
 }
