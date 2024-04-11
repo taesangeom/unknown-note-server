@@ -36,7 +36,43 @@ public class EssayController {
         this.jwtService = jwtService;
     }
 
-    // EssayController.java
+    @GetMapping
+    public ResponseEntity<Object> getRecommendedEssay(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
+        String token;
+        if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+            token = jwtToken.replace("Bearer ", "");
+        } else {
+            token = jwtToken;
+        }
+
+        int userId = jwtService.getUserIdFromJwt(jwtToken);
+
+        Essay recommendation = essayService.getRecommendedEssay(userId);
+
+        if (recommendation != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1000);
+            response.put("message", "Essay Load success");
+
+            Map<String, Object> essayInfo = new HashMap<>();
+            essayInfo.put("essayid", recommendation.getEssayId());
+            essayInfo.put("etitle", recommendation.getETitle()); // Add eTitle
+            essayInfo.put("econtent", recommendation.getEContent());
+            essayInfo.put("etime", recommendation.getEssayTime());
+            essayInfo.put("ecategory", recommendation.getECategory());
+            essayInfo.put("userid", recommendation.getUser().getUserId());
+            essayInfo.put("openable", recommendation.getOpenable());
+
+            response.put("data", essayInfo);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"code\": 2000, \"message\": \" Value recommendation is NULL\"}");
+        }
+    }
+
+
     @PostMapping
     public ResponseEntity<Object> saveEssay(@RequestBody EssayDTO essayDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         try {
@@ -194,4 +230,6 @@ public class EssayController {
                     .body("{\"code\": 4000, \"message\": \"Unexpected error during fetching essays by subscribed users\"}");
         }
     }
+
+
 }
