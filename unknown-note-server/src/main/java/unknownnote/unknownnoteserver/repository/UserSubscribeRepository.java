@@ -15,4 +15,5 @@ public interface UserSubscribeRepository extends JpaRepository<UserSubscribe, In
     Optional<UserSubscribe> findByUserIdAndFollowingId(int userId, int followingId);
 
     List<UserSubscribe> findByUserId(int userId);
+
 }

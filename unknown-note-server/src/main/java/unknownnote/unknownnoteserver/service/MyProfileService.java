@@ -178,7 +178,9 @@ public class MyProfileService {
         List<Diary> diaries = diaryRepository.findByUser_UserIdAndDiaryTimeBetween(
                 userId, Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
 
+
         List<Essay> essays = essayRepository.findByUser_UserIdAndEssayTimeBetween(
+
                 userId, Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
 
         Stream<Instant> combinedActivities = Stream.concat(
