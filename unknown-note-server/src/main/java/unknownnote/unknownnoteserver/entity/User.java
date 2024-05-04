@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,4 +44,10 @@ public class User {
 
     @Column(name = "profile_img_url", columnDefinition = "VARCHAR(200) DEFAULT 'empty'")
     private String profileImgUrl;
+
+    @ElementCollection
+    @CollectionTable(name = "user_liked_essays", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "essay_id")
+    private List<Integer> likedEssays = new ArrayList<>();
+
 }

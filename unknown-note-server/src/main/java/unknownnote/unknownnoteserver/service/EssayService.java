@@ -94,10 +94,20 @@ public class EssayService {
         return null;
     }
 
-    //좋아요순
-    public List<Essay> findAllLikedEssaysOrderByLikes(int userId) {
-        return essayRepository.findEssaysOrderByLikes(userId);
+//좋아요순
+    public List<Essay> findAllLikedEssays(int userId) {
+        User user = userRepository.findByUserId(userId);
+        List<Integer> likedEssayIds = user.getLikedEssays();
+        List<Essay> likedEssays = new ArrayList<>();
+    for (Integer essayId : likedEssayIds) {
+        Essay essay = essayRepository.findById(essayId).orElse(null);
+        if (essay != null) {
+            likedEssays.add(essay);
+        }
     }
+    return likedEssays;
+}
+
 
     //카테고리순 나열 poem, novel, whisper있음
     public Page<Essay> findEssaysByCategory(String category, int page) {
@@ -125,9 +135,15 @@ public class EssayService {
 
             Essay recommendedEssay = null;
             if (!viewedEssayIds.isEmpty()) {
-                recommendedEssay = essayRepository.findUnviewedEssay(viewedEssayIds);
+                List<Essay> unviewedEssays = essayRepository.findUnviewedEssays(viewedEssayIds);
+                if (!unviewedEssays.isEmpty()) {
+                    recommendedEssay = unviewedEssays.get(0); // 첫 번째 에세이를 선택
+                }
             } else {
-                recommendedEssay = essayRepository.findAnyEssay();
+                List<Essay> essays = essayRepository.findAnyEssay();
+                if (!essays.isEmpty()) {
+                    recommendedEssay = essays.get(0); // 첫 번째 에세이를 선택
+                }
             }
 
             // 추천된 에세이를 사용자가 본 에세이 목록에 추가
@@ -152,6 +168,9 @@ public class EssayService {
             System.err.println("An error occurred while getting recommended essay: " + e.getMessage());
             throw new RuntimeException("error occurred while getting recommended essay", e);
         }
-
     }
+    public List<Essay> findAllEssays() {
+        return essayRepository.findAll();
+    }
+
 }
