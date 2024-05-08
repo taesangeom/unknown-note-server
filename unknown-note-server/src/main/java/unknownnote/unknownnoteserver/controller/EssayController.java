@@ -204,10 +204,13 @@ public class EssayController {
     @PatchMapping
     public ResponseEntity<Object> updateEssay(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken) {
         try {
+            Integer  essayId = (Integer) requestBody.get("essayId");
+                    if (essayId == null) {
+                        return ResponseEntity.badRequest().body("{\"code\": 400, \"message\": \"essayId is required\"}");
+                    }
             int openable = (int) requestBody.get("openable");
-            String eContent = (String) requestBody.get("eContent");
-            String eCategory = (String) requestBody.get("eCategory");
-            int essayId = (Integer) requestBody.get("essayId");
+            String eContent = (String) requestBody.get("econtent");
+            String eCategory = (String) requestBody.get("ecategory");
 
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
