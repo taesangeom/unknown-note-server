@@ -1,5 +1,7 @@
 package unknownnote.unknownnoteserver.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class EssayService {
             int userid = userId;
 
             Essay essayEntity = new Essay();
+            essayEntity.setETitle(essayDTO.getETitle());
             essayEntity.setEContent(essayDTO.getEContent());
             essayEntity.setOpenable(essayDTO.getOpenable());
             essayEntity.setEssayTime(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
@@ -54,12 +57,12 @@ public class EssayService {
 
             return null;
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace(); //디버깅용 결과 모두 보여주기 위해
             throw new RuntimeException("Unexpected Error during saveNewEssay()", e);
         }
     }
 
-    public Essay updateEssay(int essayId, String eContent, String eCategory, int openable, int userId) {
+    public Essay updateEssay(int essayId, String eContent, String eCategory, String eTitle, int openable, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
             Essay essayEntity = essayOptional.get();
@@ -69,6 +72,7 @@ public class EssayService {
                 essayEntity.setEContent(eContent);
                 essayEntity.setECategory(eCategory);
                 essayEntity.setOpenable(openable);
+                essayEntity.setETitle(eTitle);
 
                 return essayRepository.save(essayEntity);
             } else {
@@ -80,33 +84,53 @@ public class EssayService {
             return null;
         }
     }
-
-    //좋아요 추가
     public Essay addLike(int essayId, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
             Essay essay = essayOptional.get();
-            if (essay.getUser().getUserId() == userId) {
+            User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+            if (!user.getLikedEssays().contains(essay)) {
+                user.getLikedEssays().add(essay);
+                System.out.println("Adding like from essayId: " + essayId + " for userId: " + userId);
                 essay.setELikes(essay.getELikes() + 1);
+                userRepository.save(user);
                 return essayRepository.save(essay);
             }
         }
         return null;
     }
 
-//좋아요순
-    public List<Essay> findAllLikedEssays(int userId) {
-        User user = userRepository.findByUserId(userId);
-        List<Integer> likedEssayIds = user.getLikedEssays();
-        List<Essay> likedEssays = new ArrayList<>();
-    for (Integer essayId : likedEssayIds) {
-        Essay essay = essayRepository.findById(essayId).orElse(null);
-        if (essay != null) {
-            likedEssays.add(essay);
+    public boolean removeLike(int essayId, int userId) {
+        Optional<Essay> essayOptional = essayRepository.findById(essayId);
+        if (essayOptional.isPresent()) {
+            Essay essay = essayOptional.get();
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (user.getLikedEssays().remove(essay)) {
+                    System.out.println("Removing like from essayId: " + essayId + " for userId: " + userId);
+                    essay.setELikes(essay.getELikes() - 1);
+                    essayRepository.saveAndFlush(essay);
+                    userRepository.saveAndFlush(user);
+                    return true;
+                } else {
+                    System.err.println("Essay not found in user's liked list");
+                }
+            } else {
+                System.err.println("User not found");
+            }
+        } else {
+            System.err.println("Essay not found");
         }
+        return false;
     }
-    return likedEssays;
-}
+
+
+    public List<Essay> findAllLikedEssays(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return new ArrayList<>(user.getLikedEssays());
+    }
 
 
     //카테고리순 나열 poem, novel, whisper있음

@@ -45,9 +45,12 @@ public class User {
     @Column(name = "profile_img_url", columnDefinition = "VARCHAR(200) DEFAULT 'empty'")
     private String profileImgUrl;
 
-    @ElementCollection
-    @CollectionTable(name = "user_liked_essays", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "essay_id")
-    private List<Integer> likedEssays = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "user_liked_essays",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "essay_id")
+    )
+    private List<Essay> likedEssays = new ArrayList<>();
 
 }
