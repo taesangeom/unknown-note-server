@@ -211,6 +211,7 @@ public class EssayController {
             int openable = (int) requestBody.get("openable");
             String eContent = (String) requestBody.get("econtent");
             String eCategory = (String) requestBody.get("ecategory");
+            String eTitle = (String) requestBody.get("etitle");
 
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -221,7 +222,7 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, openable, userId);
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable , userId);
             if (updatedEssay != null) {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
             } else {
@@ -253,4 +254,17 @@ public class EssayController {
                     .body("{\"code\": 1002, \"message\": \"Failed to add like\"}");
         }
     }
+
+    @DeleteMapping("/{essayId}/like")
+    public ResponseEntity<Object> removeLike(@PathVariable int essayId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
+        int userId = jwtService.getUserIdFromJwt(jwtToken);
+        boolean success = essayService.removeLike(essayId, userId);
+        if (success) {
+            return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully removed like\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("{\"code\": 1002, \"message\": \"Failed to remove like\"}");
+        }
+    }
+
 }
