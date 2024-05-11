@@ -50,31 +50,33 @@ public class EssayController {
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
             logger.debug("Querying essays with category: {}", category);
+                if (category == null ) {
+                    List<Essay> essays = essayService.findAll();
+                    if (!essays.isEmpty()) {
+                        Map<String, Object> response = new HashMap<>();
+                        response.put("code", 1000);
+                        response.put("message", "Successfully fetched all essays");
 
-            if (category == null ) {
-                List<Essay>essays = essayService.findAllEssays();
-                Essay recommendation = essayService.getRecommendedEssay(userId);
-                if (recommendation != null) {
-                    Map<String, Object> response = new HashMap<>();
-                    response.put("code", 1000);
-                    response.put("message", "Essay Load success");
+                        List<Map<String, Object>> essaysInfo = new ArrayList<>();
+                        for (Essay essay : essays) {
+                            Map<String, Object> essayInfo = new HashMap<>();
+                            essayInfo.put("essayid", essay.getEssayId());
+                            essayInfo.put("etitle", essay.getETitle());
+                            essayInfo.put("econtent", essay.getEContent());
+                            essayInfo.put("etime", essay.getEssayTime());
+                            essayInfo.put("ecategory", essay.getECategory());
+                            essayInfo.put("userid", essay.getUser().getUserId());
+                            essayInfo.put("openable", essay.getOpenable());
+                            essaysInfo.add(essayInfo);
+                        }
 
-                    Map<String, Object> essayInfo = new HashMap<>();
-                    essayInfo.put("essayid", recommendation.getEssayId());
-                    essayInfo.put("etitle", recommendation.getETitle()); // Add eTitle
-                    essayInfo.put("econtent", recommendation.getEContent());
-                    essayInfo.put("etime", recommendation.getEssayTime());
-                    essayInfo.put("ecategory", recommendation.getECategory());
-                    essayInfo.put("userid", recommendation.getUser().getUserId());
-                    essayInfo.put("openable", recommendation.getOpenable());
+                        response.put("data", essaysInfo);
 
-                    response.put("data", essayInfo);
-
-                    return ResponseEntity.ok(response);
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"code\": 2000, \"message\": \" Value recommendation is NULL\"}");
-                }
+                        return ResponseEntity.ok(response);
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("{\"code\": 2000, \"message\": \"No essays found\"}");
+                    }
             } else if (category.equals("favs")) {
                 List<Essay> likedEssays = essayService.findAllLikedEssays(userId);
                 if (!likedEssays.isEmpty()) {
