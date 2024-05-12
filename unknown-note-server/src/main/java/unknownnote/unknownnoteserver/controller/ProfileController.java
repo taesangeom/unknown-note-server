@@ -120,12 +120,12 @@ public class ProfileController {
     // ApiResponse 클래스
     @Getter
     @Setter
-    public class ApiResponse {
+    public class ProfileApiResponse {
         private int code;
         private String message;
         private String data;
 
-        public ApiResponse(int code, String message, String data) {
+        public ProfileApiResponse(int code, String message, String data) {
             this.code = code;
             this.message = message;
             this.data = data;
