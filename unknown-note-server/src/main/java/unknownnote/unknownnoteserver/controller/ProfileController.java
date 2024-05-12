@@ -32,6 +32,8 @@ public class ProfileController {
     @Autowired
     private ErrorService errorService;
 
+    private static final String DIRECTORY = "./uploads";
+
     @GetMapping
     public ResponseEntity<?> getProfile(@RequestHeader("Authorization") String jwtToken, @RequestParam("user_id") int param_user_id) {
         try {
