@@ -40,22 +40,21 @@ public class ProfileController {
             int jwt_user_id = jwtService.getUserIdFromJwt(jwtToken); // JWT 토큰 검증
             boolean meWatchingMyProfile;
 
-            if(jwt_user_id == param_user_id) { // 내 프로필
-                try{
+            if (jwt_user_id == param_user_id) { // 내 프로필
+                try {
                     meWatchingMyProfile = true;
-                    MyProfileResponse response = myProfileService.getMyProfileInfo(jwt_user_id,jwt_user_id,meWatchingMyProfile);
+                    MyProfileResponse response = myProfileService.getMyProfileInfo(jwt_user_id, jwt_user_id, meWatchingMyProfile);
                     return ResponseEntity.ok(response);
-                } catch (Exception e ){
+                } catch (Exception e) {
                     e.printStackTrace();
                     return ResponseEntity.ok(errorService.setError(4000, "요청 처리를 실패했습니다"));
                 }
-            }
-            else {  // 다른 사람 프로필
-                try{
+            } else {  // 다른 사람 프로필
+                try {
                     meWatchingMyProfile = false;
                     MyProfileResponse response = myProfileService.getMyProfileInfo(jwt_user_id, param_user_id, meWatchingMyProfile);
                     return ResponseEntity.ok(response);
-                } catch (Exception e ){
+                } catch (Exception e) {
                     e.printStackTrace();
                     return ResponseEntity.ok(errorService.setError(4000, "요청 처리를 실패했습니다"));
                 }
@@ -63,7 +62,22 @@ public class ProfileController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.ok(errorService.setError(2000,"유효하지 않은 접근입니다"));
+            return ResponseEntity.ok(errorService.setError(2000, "유효하지 않은 접근입니다"));
+        }
+    }
+
+    // ApiResponse 클래스
+    @Getter
+    @Setter
+    public class ApiResponse {
+        private int code;
+        private String message;
+        private String data;
+
+        public ApiResponse(int code, String message, String data) {
+            this.code = code;
+            this.message = message;
+            this.data = data;
         }
     }
     @PostMapping("/image")
