@@ -16,17 +16,12 @@ public interface EssayRepository extends JpaRepository<Essay, Integer> {
     @Query("SELECT COUNT(e) FROM Essay e WHERE e.user.userId = :userId")
     int countByUserId(int userId);
 
-    @Query("SELECT e FROM Essay e WHERE e.user.userId = :userId ORDER BY e.eLikes DESC")
-    List<Essay> findEssaysOrderByLikes(@Param("userId") int userId);
-
-    // 특정 사용자의 에세이를 시간 기준으로 조회하는 예시 메서드
     List<Essay> findByUser_UserIdAndEssayTimeBetween(int userId, Timestamp start, Timestamp end);
     Page<Essay> findByECategoryOrderByEssayTimeDesc(String category, Pageable pageable);
     List<Essay> findByUser(User user);
+    @Query("SELECT e FROM Essay e WHERE e.essayId NOT IN :viewedEssayIds")
+    List<Essay> findUnviewedEssays(@Param("viewedEssayIds") List<Integer> viewedEssayIds);
 
-    @Query("SELECT e FROM Essay e WHERE e.essayId NOT IN ?1 ORDER BY e.essayTime DESC")
-        Essay findUnviewedEssay(List<Integer> viewedEssayIds);
     @Query("SELECT e FROM Essay e ORDER BY e.essayTime DESC")
-        Essay findAnyEssay();
-
+    List<Essay> findAnyEssay();
 }

@@ -17,7 +17,8 @@ import unknownnote.unknownnoteserver.service.JwtService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping("/essay")
@@ -35,42 +36,133 @@ public class EssayController {
         this.essayService = essayService;
         this.jwtService = jwtService;
     }
+        @GetMapping
+        public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                                @RequestParam(required = false) String category,
+                                                @RequestParam(required = false) Integer page) {
+            String token;
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                token = jwtToken.replace("Bearer ", "");
+            } else {
+                token = jwtToken;
+            }
 
-    @GetMapping
-    public ResponseEntity<Object> getRecommendedEssay(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
-        String token;
-        if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
-            token = jwtToken.replace("Bearer ", "");
-        } else {
-            token = jwtToken;
+            int userId = jwtService.getUserIdFromJwt(jwtToken);
+
+            logger.debug("Querying essays with category: {}", category);
+                if (category == null ) {
+                    List<Essay> essays = essayService.findAll();
+                    if (!essays.isEmpty()) {
+                        Map<String, Object> response = new HashMap<>();
+                        response.put("code", 1000);
+                        response.put("message", "Successfully fetched all essays");
+
+                        List<Map<String, Object>> essaysInfo = new ArrayList<>();
+                        for (Essay essay : essays) {
+                            Map<String, Object> essayInfo = new HashMap<>();
+                            essayInfo.put("essayid", essay.getEssayId());
+                            essayInfo.put("etitle", essay.getETitle());
+                            essayInfo.put("econtent", essay.getEContent());
+                            essayInfo.put("etime", essay.getEssayTime());
+                            essayInfo.put("ecategory", essay.getECategory());
+                            essayInfo.put("userid", essay.getUser().getUserId());
+                            essayInfo.put("openable", essay.getOpenable());
+                            essaysInfo.add(essayInfo);
+                        }
+
+                        response.put("data", essaysInfo);
+
+                        return ResponseEntity.ok(response);
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("{\"code\": 2000, \"message\": \"No essays found\"}");
+                    }
+            } else if (category.equals("favs")) {
+                List<Essay> likedEssays = essayService.findAllLikedEssays(userId);
+                if (!likedEssays.isEmpty()) {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("code", 1000);
+                    response.put("message", "Successfully fetched liked essays");
+
+                    List<Map<String, Object>> essaysInfo = new ArrayList<>();
+                    for (Essay essay : likedEssays) {
+                        Map<String, Object> essayInfo = new HashMap<>();
+                        essayInfo.put("essayid", essay.getEssayId());
+                        essayInfo.put("etitle", essay.getETitle());
+                        essayInfo.put("econtent", essay.getEContent());
+                        essayInfo.put("etime", essay.getEssayTime());
+                        essayInfo.put("ecategory", essay.getECategory());
+                        essayInfo.put("userid", essay.getUser().getUserId());
+                        essayInfo.put("openable", essay.getOpenable());
+                        essaysInfo.add(essayInfo);
+                    }
+
+                    response.put("data", essaysInfo);
+
+                    return ResponseEntity.ok(response);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("{\"code\": 2000, \"message\": \"No liked essays found\"}");
+                }
+            } else if (category.equals("subs")) {
+                List<Essay> essays = essayService.findAllEssaysBySubscribedUsers(userId);
+                if (!essays.isEmpty()) {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("code", 1000);
+                    response.put("message", "Successfully fetched essays by subscribed users");
+
+                    List<Map<String, Object>> essaysInfo = new ArrayList<>();
+                    for (Essay essay : essays) {
+                        Map<String, Object> essayInfo = new HashMap<>();
+                        essayInfo.put("essayid", essay.getEssayId());
+                        essayInfo.put("etitle", essay.getETitle());
+                        essayInfo.put("econtent", essay.getEContent());
+                        essayInfo.put("etime", essay.getEssayTime());
+                        essayInfo.put("ecategory", essay.getECategory());
+                        essayInfo.put("userid", essay.getUser().getUserId());
+                        essayInfo.put("openable", essay.getOpenable());
+                        essaysInfo.add(essayInfo);
+                    }
+
+                    response.put("data", essaysInfo);
+
+                    return ResponseEntity.ok(response);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("{\"code\": 2000, \"message\": \"No essays found by subscribed users\"}");
+                }
+            } else  if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
+                Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page);
+                if (essaysPage != null && !essaysPage.isEmpty()) {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("code", 1000);
+                    response.put("message", "Successfully fetched essays by category");
+
+                    List<Map<String, Object>> essaysInfo = new ArrayList<>();
+                    for (Essay essay : essaysPage.getContent()) {
+                        Map<String, Object> essayInfo = new HashMap<>();
+                        essayInfo.put("essayid", essay.getEssayId());
+                        essayInfo.put("etitle", essay.getETitle());
+                        essayInfo.put("econtent", essay.getEContent());
+                        essayInfo.put("etime", essay.getEssayTime());
+                        essayInfo.put("ecategory", essay.getECategory());
+                        essayInfo.put("userid", essay.getUser().getUserId());
+                        essayInfo.put("openable", essay.getOpenable());
+                        essaysInfo.add(essayInfo);
+                    }
+
+                    response.put("data", essaysInfo);
+
+                    return ResponseEntity.ok(response);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("{\"code\": 2000, \"message\": \"No essays found for the given category\"}");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("{\"code\": 1002, \"message\": \"Invalid type parameter\"}");
+            }
         }
-
-        int userId = jwtService.getUserIdFromJwt(jwtToken);
-
-        Essay recommendation = essayService.getRecommendedEssay(userId);
-
-        if (recommendation != null) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("code", 1000);
-            response.put("message", "Essay Load success");
-
-            Map<String, Object> essayInfo = new HashMap<>();
-            essayInfo.put("essayid", recommendation.getEssayId());
-            essayInfo.put("etitle", recommendation.getETitle()); // Add eTitle
-            essayInfo.put("econtent", recommendation.getEContent());
-            essayInfo.put("etime", recommendation.getEssayTime());
-            essayInfo.put("ecategory", recommendation.getECategory());
-            essayInfo.put("userid", recommendation.getUser().getUserId());
-            essayInfo.put("openable", recommendation.getOpenable());
-
-            response.put("data", essayInfo);
-
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("{\"code\": 2000, \"message\": \" Value recommendation is NULL\"}");
-        }
-    }
 
 
     @PostMapping
@@ -114,10 +206,14 @@ public class EssayController {
     @PatchMapping
     public ResponseEntity<Object> updateEssay(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken) {
         try {
+            Integer  essayId = (Integer) requestBody.get("essayId");
+                    if (essayId == null) {
+                        return ResponseEntity.badRequest().body("{\"code\": 400, \"message\": \"essayId is required\"}");
+                    }
             int openable = (int) requestBody.get("openable");
-            String eContent = (String) requestBody.get("eContent");
-            String eCategory = (String) requestBody.get("eCategory");
-            int essayId = (Integer) requestBody.get("essayId");
+            String eContent = (String) requestBody.get("econtent");
+            String eCategory = (String) requestBody.get("ecategory");
+            String eTitle = (String) requestBody.get("etitle");
 
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -128,7 +224,7 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, openable, userId);
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable , userId);
             if (updatedEssay != null) {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
             } else {
@@ -149,24 +245,6 @@ public class EssayController {
                     .body("{\"code\": 4000, \"message\": \"Unexpected error during updating essay\"}");
         }
     }
-
-//카테고리순정렬. {카테고리 이름},{몇개씩보여줄건지(20)}
-    @GetMapping("/{category}/{page}")
-    public ResponseEntity<Object> getEssaysByCategory(@PathVariable String category, @PathVariable int page) {
-        Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page);
-        List<Essay> essays = essaysPage.getContent();
-        if (essays != null) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("code", 1000);
-            response.put("message", "Successfully fetched essays");
-            response.put("essays", essays);
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1002, \"message\": \"Failed to fetch essays\"}");
-        }
-    }
-
     @PostMapping("/{essayId}/like")
     public ResponseEntity<Object> addLike(@PathVariable int essayId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
         int userId = jwtService.getUserIdFromJwt(jwtToken);
@@ -178,58 +256,17 @@ public class EssayController {
                     .body("{\"code\": 1002, \"message\": \"Failed to add like\"}");
         }
     }
-    //좋아요순
-    @GetMapping("/favs/{page}")
-    public ResponseEntity<Object> getEssaysOrderByLikes(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
-        try {
-            int userId = jwtService.getUserIdFromJwt(jwtToken);
-            List<Essay> likedEssays = essayService.findAllLikedEssaysOrderByLikes(userId);
-            if (likedEssays != null) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("code", 1000);
-                response.put("message", "Successfully fetched liked essays");
-                response.put("essays", likedEssays);
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("{\"code\": 1002, \"message\": \"Failed to fetch liked essays\"}");
-            }
-        } catch (JwtException e) {
-            logger.error("Error during Decoding Token", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("{\"code\": 2000, \"message\": \"Error during token validation or decoding\"}");
-        } catch (Exception e) {
-            logger.error("Unexpected error during fetching liked essays", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 4000, \"message\": \"Unexpected error during fetching liked essays\"}");
-        }
-    }
-    // 구독한 유저 순으로 정렬
-    @GetMapping("/subs/{page}")
-    public ResponseEntity<Object> getEssaysBySubscribedUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
-        try {
-            int userId = jwtService.getUserIdFromJwt(jwtToken);
-            List<Essay> essays = essayService.findAllEssaysBySubscribedUsers(userId);
-            if (essays != null) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("code", 1000);
-                response.put("message", "Successfully fetched essays by subscribed users");
-                response.put("essays", essays);
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("{\"code\": 1002, \"message\": \"Failed to fetch essays by subscribed users\"}");
-            }
-        } catch (JwtException e) {
-            logger.error("Error during Decoding Token", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("{\"code\": 2000, \"message\": \"Error during token validation or decoding\"}");
-        } catch (Exception e) {
-            logger.error("Unexpected error during fetching essays by subscribed users", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 4000, \"message\": \"Unexpected error during fetching essays by subscribed users\"}");
-        }
-    }
 
+    @DeleteMapping("/{essayId}/like")
+    public ResponseEntity<Object> removeLike(@PathVariable int essayId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
+        int userId = jwtService.getUserIdFromJwt(jwtToken);
+        boolean success = essayService.removeLike(essayId, userId);
+        if (success) {
+            return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully removed like\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("{\"code\": 1002, \"message\": \"Failed to remove like\"}");
+        }
+    }
 
 }
