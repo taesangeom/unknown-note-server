@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
                         .anyRequest().authenticated()); // 그 외 모든 요청은 인증된 사용자만 접근 가능
 
         //세션 설정 : STATELESS
