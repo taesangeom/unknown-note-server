@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aca00884-fbcf-4147-a572-6172e6a141ad" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/unknown-note-server/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/UnknownNoteServerApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/CalenderController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/DiaryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/EssayController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/JwtHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/ProfileController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/SigninController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/CalenderInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/CalenderResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/DiaryDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/ErrorResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/EssayDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MonthlyActivity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MyProfileInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MyProfileResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/RecentGraph.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfoRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfoResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Diary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Diary_cnt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Essay.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Essay_cnt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Monthly_emo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserSubscribe.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserSubscribeId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedDiariesEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedDiariesId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedEssaysEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedEssaysId.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/exception/UserNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/jwt/JWTUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/DiaryRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/EssayRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserSubscribeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserViewedDiariesRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserViewedEssaysRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/DiaryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/ErrorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/EssayService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/JwtService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/MyProfileService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/UserSubscribeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/SocialUserInfoFetcher.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/UserInfoProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/GoogleUserInfoProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/KakaoUserInfoProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/NaverUserInfoProvider.class" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/unknown-note-server">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="unknown-note-server" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2gLgBtNtBzBaqnq7kWAvCGFq3jG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build unknown-note-server.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.UnknownNoteServerApplication (1).executor": "Run",
+    "Spring Boot.UnknownNoteServerApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/USER/Documents/GitHub/min.ver/unknown-note-server",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.UnknownNoteServerApplication (1)">
+    <configuration name="UnknownNoteServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="unknown-note-server.unknown-note-server.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="unknownnote.unknownnoteserver.UnknownNoteServerApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="unknownnote.unknownnoteserver.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UnknownNoteServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="unknown-note-server.unknown-note-server.main~1" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="unknownnote.unknownnoteserver.UnknownNoteServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.UnknownNoteServerApplication (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-f98dd351" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aca00884-fbcf-4147-a572-6172e6a141ad" name="Changes" comment="" />
+      <created>1715482139522</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715482139522</updated>
+      <workItem from="1715482140453" duration="57000" />
+      <workItem from="1715482210003" duration="2443000" />
+      <workItem from="1715703228996" duration="37000" />
+      <workItem from="1715703571794" duration="405000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
