@@ -3,26 +3,29 @@ package unknownnote.unknownnoteserver.controller;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import unknownnote.unknownnoteserver.service.DiaryService;
 import unknownnote.unknownnoteserver.dto.DiaryDTO;
-import unknownnote.unknownnoteserver.entity.DiaryEntity;
+import unknownnote.unknownnoteserver.entity.Diary;
+import unknownnote.unknownnoteserver.service.DiaryService;
+import unknownnote.unknownnoteserver.service.JwtService;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/diary")
 public class DiaryController {
 
     private final DiaryService diaryService;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Autowired
     private JwtHandler jwtHandler;
@@ -46,11 +49,11 @@ public class DiaryController {
                 token=jwtToken;
             }
 
-            jwtHandler.tokenValidation(token); //예외 1 가능
-            int userId=jwtHandler.jwtDecoder(token); //예외 2 가능
+            //jwtHandler.tokenValidation(token); //예외 1 가능
+            int userId=jwtService.getUserIdFromJwt(jwtToken); //jwtHandler.jwtDecoder(token); //예외 2 가능
 
 
-            DiaryEntity savedDiary=diaryService.SaveNewDiary(diaryDTO,userId);
+            Diary savedDiary=diaryService.SaveNewDiary(diaryDTO,userId);
             if(savedDiary!=null) {
                 // Diary가 성공적으로 저장되었을 때의 응답
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Diary saved\"}");
@@ -80,7 +83,7 @@ public class DiaryController {
     }
 
     @PatchMapping
-    public ResponseEntity<Object> changeDiary(@RequestBody Map<String, Object> requestBody, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken){
+    public ResponseEntity<Object> changeDiary(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken){
         try {
             int openable = (int) requestBody.get("openable");
             String dcontent = (String) requestBody.get("dcontent");
@@ -93,10 +96,11 @@ public class DiaryController {
                 token = jwtToken;
             }
 
-            jwtHandler.tokenValidation(token); //예외 1 가능
-            int userid = jwtHandler.jwtDecoder(token); //예외 2 가능
+            //jwtHandler.tokenValidation(token); //예외 1 가능
+            int userid = jwtService.getUserIdFromJwt(jwtToken); //jwtHandler.jwtDecoder(token); //예외 2 가능
 
-            DiaryEntity changedDiary = diaryService.updateDiary(diaryid,dcontent,openable,userid);
+
+            Diary changedDiary = diaryService.updateDiary(diaryid,dcontent,openable,userid);
             if(changedDiary!=null){
                 //update 성공
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Diary updated succesfully\"}");
@@ -134,8 +138,8 @@ public class DiaryController {
                 token=jwtToken;
             }
 
-            jwtHandler.tokenValidation(token); //예외 1 가능
-            int userId=jwtHandler.jwtDecoder(token); //예외 2 가능
+            //jwtHandler.tokenValidation(token); //예외 1 가능
+            int userId=jwtService.getUserIdFromJwt(jwtToken); //jwtHandler.jwtDecoder(token); //예외 2 가능
 
 
             List<String> emotionList = Arrays.asList("happy", "love", "expect","thanks","anger", "fear", "sad", "regret");
@@ -146,7 +150,7 @@ public class DiaryController {
                         .body("{\"code\": 2000, \"message\": \"emotion is null or out of range\"}");
             }
 
-            DiaryEntity recommendation = diaryService.getRecommendedDiary(userId,emotion);
+            Diary recommendation = diaryService.getRecommendedDiary(userId,emotion);
 
             if (recommendation != null) {
                 Map<String, Object> response = new HashMap<>();
@@ -154,11 +158,11 @@ public class DiaryController {
                 response.put("message", "Diary Load success");
 
                 Map<String, Object> diaryInfo = new HashMap<>();
-                diaryInfo.put("diaryid", recommendation.getDiaryid());
-                diaryInfo.put("dcontent", recommendation.getDcontent());
-                diaryInfo.put("dtime", recommendation.getDtime());
-                diaryInfo.put("dtag", recommendation.getDtag());
-                diaryInfo.put("userid", recommendation.getUser().getUserid());
+                diaryInfo.put("diaryid", recommendation.getDiaryId());
+                diaryInfo.put("dcontent", recommendation.getDContent());
+                diaryInfo.put("dtime", recommendation.getDiaryTime());
+                diaryInfo.put("dtag", recommendation.getDTag());
+                diaryInfo.put("userid", recommendation.getUser().getUserId());
                 diaryInfo.put("openable", recommendation.getOpenable());
 
                 response.put("data", diaryInfo);

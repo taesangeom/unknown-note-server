@@ -1,8 +1,7 @@
 package unknownnote.unknownnoteserver.dto;
 
-
-import lombok.RequiredArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor

@@ -1,47 +1,30 @@
 package unknownnote.unknownnoteserver.entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+// 수정 아이디어
+// USerEntity를 객체로 받아서 여기서 받은 데이터를 User 클래스로 넘겨준 뒤,
+// User 클래스에서 UserEntity를 통해 필요한 데이터만 주입하는 방식
+// 이 값을 repository를 통해 DB에 저장하거나, DB에서 가져오는 역할을 함
+
+// @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "user")
-@Data // Lombok 대체  getters, setters, toString, equals, hashCode
+// @Table(name = "user")
 public class UserEntity {
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "user_id")
+    private int userId;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Integer userid;
-
-    @Column(name = "user_pwd", nullable = false)
-    private String userpwd;
-
-    @Column(name = "nickname", nullable = false)
-    private String nickname;
-
-    @Column(name = "birth")
-    private int birth;
-
-    @Column(name = "gender")
-    private int gender;
-
-    @Column(name = "made_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp madedate;
-
-    @Column(name = "level", columnDefinition = "INT DEFAULT 0")
-    private int level;
-
-    @Column(name = "social_id")
-    private String socialid;
-
-    @Column(name = "introduction")
-    private String introduction;
-
-    @Column(name = "method")
+    // @Column(name = "method")
     private String method;
+    // @Column(name = "social_id")
+    private String socialId;
 }
-
-

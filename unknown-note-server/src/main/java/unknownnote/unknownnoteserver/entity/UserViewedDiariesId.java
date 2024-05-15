@@ -1,9 +1,10 @@
 package unknownnote.unknownnoteserver.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.*;
-import java.io.Serializable;
 
-import jakarta.persistence.*;
+import java.io.Serializable;
 
 @Embeddable
 @Getter
@@ -19,4 +20,3 @@ public class UserViewedDiariesId implements Serializable {
     @Column(name = "diary_id")
     private int diaryid;
 }
-
