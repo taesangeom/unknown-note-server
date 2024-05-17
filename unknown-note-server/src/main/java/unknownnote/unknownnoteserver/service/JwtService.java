@@ -27,6 +27,6 @@ public class JwtService {
         return Jwts.parser()
                 .verifyWith(key)
                 .build().parseSignedClaims(jwtToken)
-                .getPayload().get("userId", Integer.class);
+                .getPayload().get("user_id", Integer.class);
     }
 }
