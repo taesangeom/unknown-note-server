@@ -14,6 +14,7 @@ import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.service.EssayService;
 import unknownnote.unknownnoteserver.service.JwtService;
 import unknownnote.unknownnoteserver.entity.User;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class EssayController {
                     if (!essays.isEmpty()) {
                         Map<String, Object> response = new HashMap<>();
                         response.put("code", 1000);
-                        response.put("message", "Successfully fetched all essays");
+                        response.put("message", "Fetched all essays");
 
                         List<Map<String, Object>> essaysInfo = new ArrayList<>();
                         for (Essay essay : essays) {
@@ -75,15 +76,14 @@ public class EssayController {
 
                         return ResponseEntity.ok(response);
                     } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body("{\"message\": \"No essays found\"}");
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                     }
             } else if (category.equals("favs")) {
                 List<Essay> likedEssays = essayService.findAllLikedEssays(userId);
                 if (!likedEssays.isEmpty()) {
                     Map<String, Object> response = new HashMap<>();
                     response.put("code", 1000);
-                    response.put("message", "Successfully fetched liked essays");
+                    response.put("message", "Fetched liked essays");
 
                     List<Map<String, Object>> essaysInfo = new ArrayList<>();
                     for (Essay essay : likedEssays) {
@@ -102,8 +102,7 @@ public class EssayController {
 
                     return ResponseEntity.ok(response);
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"message\": \"No liked essays found\"}");
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                 }
             } else if (category.equals("subs")) {
                 List<Essay> essays = essayService.findAllEssaysBySubscribedUsers(userId);
@@ -128,9 +127,8 @@ public class EssayController {
                     response.put("data", essaysInfo);
 
                     return ResponseEntity.ok(response);
-                } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"message\": \"No essays found by subscribed users\"}");
+                }else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                 }
             } else  if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
                 Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page);
@@ -156,8 +154,7 @@ public class EssayController {
 
                     return ResponseEntity.ok(response);
                 } else {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{ \"message\": \"No essays found for the given category\"}");
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -299,8 +296,7 @@ public class EssayController {
 
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("{\"code\": 1003, \"message\": \"No essays found for the user\"}");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
