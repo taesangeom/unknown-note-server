@@ -296,8 +296,8 @@ public class EssayController {
 
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                }
     }
 
 }
