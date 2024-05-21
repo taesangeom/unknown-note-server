@@ -76,7 +76,7 @@ public class EssayController {
                         return ResponseEntity.ok(response);
                     } else {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body("{\"code\": 2000, \"message\": \"No essays found\"}");
+                                .body("{\"message\": \"No essays found\"}");
                     }
             } else if (category.equals("favs")) {
                 List<Essay> likedEssays = essayService.findAllLikedEssays(userId);
@@ -103,7 +103,7 @@ public class EssayController {
                     return ResponseEntity.ok(response);
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"code\": 2000, \"message\": \"No liked essays found\"}");
+                            .body("{\"message\": \"No liked essays found\"}");
                 }
             } else if (category.equals("subs")) {
                 List<Essay> essays = essayService.findAllEssaysBySubscribedUsers(userId);
@@ -130,7 +130,7 @@ public class EssayController {
                     return ResponseEntity.ok(response);
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"code\": 2000, \"message\": \"No essays found by subscribed users\"}");
+                            .body("{\"message\": \"No essays found by subscribed users\"}");
                 }
             } else  if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
                 Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page);
@@ -157,11 +157,11 @@ public class EssayController {
                     return ResponseEntity.ok(response);
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body("{\"code\": 2000, \"message\": \"No essays found for the given category\"}");
+                            .body("{\"message\": \"No essays found for the given category\"}");
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("{\"code\": 1002, \"message\": \"Invalid type parameter\"}");
+                        .body("{\"code\": 1003, \"message\": \"Invalid type parameter\"}");
             }
         }
 
@@ -183,7 +183,7 @@ public class EssayController {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay saved\"}");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\"code\": 1002, \"message\": \"Essay saving failed\"}");
+                        .body("{\"code\": 1003, \"message\": \"Essay saving failed\"}");
             }
         } catch (IllegalStateException e) {
             logger.error("jwtToken is not in proper form / Outdated", e);
@@ -196,7 +196,7 @@ public class EssayController {
         } catch (RuntimeException e) {
             logger.error("Unexpected Error during saveNewEssay()", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 2000, \"message\": \" Unexpected Error during saveNewEssay()\"}");
+                    .body("{\"code\": 1003, \"message\": \" Unexpected Error during saveNewEssay()\"}");
         } catch (Exception e) {
             logger.error("Unexpected error during saving essay", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -230,7 +230,7 @@ public class EssayController {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\"code\": 1002, \"message\": \"Essay update failed\"}");
+                        .body("{\"code\": 1003, \"message\": \"Essay update failed\"}");
             }
         } catch (IllegalStateException e) {
             logger.error("jwtToken is not in proper form / Outdated", e);
@@ -254,7 +254,7 @@ public class EssayController {
             return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully added like\"}");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1002, \"message\": \"Failed to add like\"}");
+                    .body("{\"code\": 1003, \"message\": \"Failed to add like\"}");
         }
     }
 
@@ -266,7 +266,7 @@ public class EssayController {
             return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully removed like\"}");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1002, \"message\": \"Failed to remove like\"}");
+                    .body("{\"code\": 1003, \"message\": \"Failed to remove like\"}");
         }
     }
     @GetMapping("/{userId}")
@@ -300,7 +300,7 @@ public class EssayController {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("{\"code\": 2000, \"message\": \"No essays found for the user\"}");
+                    .body("{\"code\": 1003, \"message\": \"No essays found for the user\"}");
         }
     }
 
