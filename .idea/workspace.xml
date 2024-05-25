@@ -5,64 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aca00884-fbcf-4147-a572-6172e6a141ad" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/unknown-note-server/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/UnknownNoteServerApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/CalenderController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/DiaryController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/EssayController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/JwtHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/ProfileController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/SigninController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/CalenderInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/CalenderResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/DiaryDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/ErrorResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/EssayDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MonthlyActivity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MyProfileInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/MyProfileResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/RecentGraph.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfoRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/dto/UserInfoResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Diary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Diary_cnt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Essay.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Essay_cnt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/Monthly_emo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserSubscribe.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserSubscribeId.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedDiariesEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedDiariesId.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedEssaysEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/entity/UserViewedEssaysId.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/exception/UserNotFoundException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/jwt/JWTUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/DiaryRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/EssayRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserSubscribeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserViewedDiariesRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/repository/UserViewedEssaysRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/DiaryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/ErrorService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/EssayService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/JwtService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/MyProfileService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/service/UserSubscribeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/SocialUserInfoFetcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/UserInfoProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/GoogleUserInfoProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/KakaoUserInfoProvider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unknown-note-server/build/classes/java/main/unknownnote/unknownnoteserver/util/providers/NaverUserInfoProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,28 +52,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build unknown-note-server.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.UnknownNoteServerApplication (1).executor": "Run",
-    "Spring Boot.UnknownNoteServerApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/USER/Documents/GitHub/min.ver/unknown-note-server",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build unknown-note-server.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.UnknownNoteServerApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UnknownNoteServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;EOMTaesang&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/USER/Documents/GitHub/min.ver/unknown-note-server&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.UnknownNoteServerApplication (1)">
     <configuration name="UnknownNoteServerApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="unknown-note-server.unknown-note-server.main" />
@@ -173,6 +120,12 @@
       <workItem from="1715482210003" duration="2443000" />
       <workItem from="1715703228996" duration="37000" />
       <workItem from="1715703571794" duration="405000" />
+      <workItem from="1715738847196" duration="183000" />
+      <workItem from="1715739146183" duration="534000" />
+      <workItem from="1715745221384" duration="15000" />
+      <workItem from="1715957045790" duration="29000" />
+      <workItem from="1715957118300" duration="361000" />
+      <workItem from="1716200247848" duration="2271000" />
     </task>
     <servers />
   </component>
