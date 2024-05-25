@@ -27,7 +27,7 @@ public class DiaryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Column(name = "openable", nullable = false)
     private int openable;

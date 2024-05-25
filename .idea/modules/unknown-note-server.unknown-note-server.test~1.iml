@@ -15,7 +15,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="unknown-note-server.unknown-note-server.main" />
+    <orderEntry type="module" module-name="unknown-note-server.unknown-note-server.main~1" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-impl:0.12.3" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-jackson:0.12.3" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt-api:0.12.3" level="project" />
