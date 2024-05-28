@@ -3,11 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/unknown-note-server.iml" filepath="$PROJECT_DIR$/.idea/unknown-note-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.iml" filepath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.main~1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/unknown-note-server.unknown-note-server.test~1.iml" />
     </modules>
   </component>
 </project>
