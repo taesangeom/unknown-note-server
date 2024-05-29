@@ -30,8 +30,7 @@ public class DiaryController {
     @Autowired
     private ErrorService errorService;
 
-    @Autowired
-    private JwtHandler jwtHandler;
+
     private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
     @Autowired
