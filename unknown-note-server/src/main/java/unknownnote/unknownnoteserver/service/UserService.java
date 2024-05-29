@@ -35,18 +35,8 @@ public class UserService {
             user.setMethod(method);
             user.setSocialId(userInfo.getSocialId());
 
-            // primiteve type은 null이 될 수 없음 문제가 발생
-            // 따라서 임의 값을 일단 설정해두겠음
-            user.setBirth(1);
-            user.setGender(1);
-            user.setNickname("test");
-            user.setProfileImgUrl("test");
-            user.setIntroduction("test");
-            user.setMadedate(Timestamp.from(Instant.now()));
-
             userRepository.save(user);
 
-            // user.getUserId()가 null이라서 오류가 발생할 수 있음 -> 발생안함
             UserEntity userEntity = new UserEntity(user.getUserId(), method, userInfo.getSocialId());
 
             return userEntity;
@@ -61,7 +51,6 @@ public class UserService {
         return jwtUtil.createJwt(userId, 60*60*60*60L);
     }
 
-    // 태상 + 동규 코드 추가
     public UserInfoResponse getUserInfo(int userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("해당 ID의 유저가 없습니다"));
