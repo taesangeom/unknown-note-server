@@ -30,13 +30,14 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.POST, "/signin").permitAll() // 로그인 경로
+                        /*.requestMatchers(HttpMethod.POST, "/signin").permitAll() // 로그인 경로
                         .requestMatchers(HttpMethod.GET, "/providers/**").authenticated() // 제공업체로부터 정보를 받아오는 경로
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
-                        .anyRequest().authenticated()); // 그 외 모든 요청은 인증된 사용자만 접근 가능
+                        .anyRequest().authenticated()); // 그 외 모든 요청은 인증된 사용자만 접근 가능*/
+                        .anyRequest().permitAll()); // 모든 요청에 대해 접근을 허용
 
         //세션 설정 : STATELESS
         http

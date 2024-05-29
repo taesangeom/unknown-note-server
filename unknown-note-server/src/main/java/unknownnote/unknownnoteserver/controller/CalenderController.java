@@ -7,11 +7,9 @@ import unknownnote.unknownnoteserver.dto.CalenderInfo;
 import unknownnote.unknownnoteserver.dto.CalenderResponse;
 import unknownnote.unknownnoteserver.service.DiaryService;
 import unknownnote.unknownnoteserver.service.ErrorService;
-import unknownnote.unknownnoteserver.service.JwtService;
+import unknownnote.unknownnoteserver.jwt.JwtService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/diary/cal")

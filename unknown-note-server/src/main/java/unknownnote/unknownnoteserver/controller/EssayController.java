@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.service.EssayService;
-import unknownnote.unknownnoteserver.service.JwtService;
+import unknownnote.unknownnoteserver.jwt.JwtService;
 
 import java.util.HashMap;
 import java.util.List;
