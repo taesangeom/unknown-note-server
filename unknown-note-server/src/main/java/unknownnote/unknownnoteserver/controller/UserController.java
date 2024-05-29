@@ -7,7 +7,7 @@ import unknownnote.unknownnoteserver.dto.UserInfoRequest;
 import unknownnote.unknownnoteserver.dto.UserInfoResponse;
 import unknownnote.unknownnoteserver.exception.UserNotFoundException;
 import unknownnote.unknownnoteserver.service.ErrorService;
-import unknownnote.unknownnoteserver.service.JwtService;
+import unknownnote.unknownnoteserver.jwt.JwtService;
 import unknownnote.unknownnoteserver.service.UserService;
 import unknownnote.unknownnoteserver.service.UserSubscribeService;
 

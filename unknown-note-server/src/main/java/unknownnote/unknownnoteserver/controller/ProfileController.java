@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unknownnote.unknownnoteserver.dto.MyProfileResponse;
-import unknownnote.unknownnoteserver.dto.UserInfoResponse;
+import unknownnote.unknownnoteserver.jwt.JwtService;
 import unknownnote.unknownnoteserver.service.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
