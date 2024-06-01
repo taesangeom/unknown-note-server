@@ -54,8 +54,23 @@ public class UserService {
     public UserInfoResponse getUserInfo(int userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("해당 ID의 유저가 없습니다"));
+        
+        String directoryPath = "./uploads/";
+        String jpgFilePath = directoryPath + userId + ".jpg";
+        String pngFilePath = directoryPath + userId + ".png";
+        String img_name;
 
-        UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction());
+        // 파일 존재 여부 확인
+        if (Files.exists(Paths.get(jpgFilePath))) {
+            img_name = userId + ".jpg";
+        } else if (Files.exists(Paths.get(pngFilePath))) {
+            img_name = userId + ".png";
+        } else {
+            img_name = null;
+        }
+        String img_file = "http://localhost:8000/profile/files/" + img_name;
+
+        UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction(), img_file);
 
         UserInfoResponse response = new UserInfoResponse();
         response.setCode(1000); // Success code
