@@ -75,8 +75,8 @@ public class MyProfileService {
         //MyprofileInfo 작성
         MyProfileInfo myProfileInfo = new MyProfileInfo();
         myProfileInfo.setUser(userInfo);
-        myProfileInfo.setEssayCnt(essayCount);
-        myProfileInfo.setJournalCnt(diaryCount);
+        myProfileInfo.setEssay_cnt(essayCount);
+        myProfileInfo.setJournal_cnt(diaryCount);
         myProfileInfo.setMonthly_emo(monthly_emo);
         myProfileInfo.setFlower(flower);
         myProfileInfo.setMonthly_act(activities);
