@@ -139,14 +139,14 @@ public class EssayController {
                 return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
             }
         } else if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
-            Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page);
-            if (essaysPage != null && !essaysPage.isEmpty()) {
+            List<Essay> essays = essayService.findEssaysByCategory(category);
+            if (!essays.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
                 response.put("message", "Successfully fetched essays by category");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
-                for (Essay essay : essaysPage.getContent()) {
+                for (Essay essay : essays) {
                     Map<String, Object> essayInfo = new HashMap<>();
                     essayInfo.put("essayid", essay.getEssayId());
                     essayInfo.put("etitle", essay.getETitle());
@@ -210,7 +210,7 @@ public class EssayController {
     @PatchMapping
     public ResponseEntity<Object> updateEssay(@RequestBody Map<String, Object> requestBody, @RequestHeader("Authorization") String jwtToken) {
         try {
-            Integer  essayId = (Integer) requestBody.get("essayid");
+            Integer essayId = (Integer) requestBody.get("essayid");
             if (essayId == null) {
                 return ResponseEntity.badRequest().body("{\"code\": 400, \"message\": \"essayId is required\"}");
             }
@@ -228,7 +228,7 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable , userId);
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable, userId);
             if (updatedEssay != null) {
                 return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
             } else {
@@ -275,8 +275,8 @@ public class EssayController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> getUserEssays(@PathVariable int userId, @RequestParam Optional<Integer> page) {
-        List<Essay> essays = essayService.findUserEssays(page, userId);
+    public ResponseEntity<Object> getUserEssays(@PathVariable int userId) {
+        List<Essay> essays = essayService.findUserEssays(userId);
         if (!essays.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("code", 1000);
