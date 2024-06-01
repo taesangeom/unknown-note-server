@@ -135,9 +135,8 @@ public class EssayService {
 
 
     //카테고리순 나열 poem, novel, whisper있음
-    public Page<Essay> findEssaysByCategory(String category, int page) {
-        Pageable pageable = PageRequest.of(page, 20);
-        return essayRepository.findByECategoryOrderByEssayTimeDesc(category, pageable);
+    public List<Essay> findEssaysByCategory(String category) {
+        return essayRepository.findEssaysByCategory(category);
     }
 
     public List<Essay> findAllEssaysBySubscribedUsers(int userId) {
@@ -156,8 +155,7 @@ public class EssayService {
         return essayRepository.findAll();
     }
 
-    public List<Essay> findUserEssays(@RequestParam Optional<Integer> page, int userId) {
-        Pageable pageable = PageRequest.of(page.orElse(0), 20);
-        return essayRepository.findByUser_UserId(userId, pageable).getContent();
+    public List<Essay> findUserEssays(int userId) {
+        return essayRepository.findByUser_UserId(userId);
     }
 }
