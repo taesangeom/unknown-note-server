@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import java.nio.file.*;
+import java.io.IOException;
+
 @Service
 public class MyProfileService {
 
@@ -70,7 +73,22 @@ public class MyProfileService {
         List<MonthlyActivity> activities = getMonthlyActivities(userId);
         List<RecentGraph> recentGraphs = getRecentGraphData(userId);
 
-        UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction());
+        String directoryPath = "./uploads/";
+        String jpgFilePath = directoryPath + userId + ".jpg";
+        String pngFilePath = directoryPath + userId + ".png";
+        String img_name;
+
+        // 파일 존재 여부 확인
+        if (Files.exists(Paths.get(jpgFilePath))) {
+            img_name = userId + ".jpg";
+        } else if (Files.exists(Paths.get(pngFilePath))) {
+            img_name = userId + ".png";
+        } else {
+            img_name = null;
+        }
+        String img_file = "http://localhost:8000/profile/files/" + img_name;
+
+        UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction(), img_file);
 
         //MyprofileInfo 작성
         MyProfileInfo myProfileInfo = new MyProfileInfo();
