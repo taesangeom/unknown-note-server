@@ -11,4 +11,5 @@ public class UserInfo {
     private int user_id;
     private String nickname;
     private String introduction;
+    private String profile_img;
 }
