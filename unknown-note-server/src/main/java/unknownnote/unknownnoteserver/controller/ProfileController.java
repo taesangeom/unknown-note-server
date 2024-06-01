@@ -86,13 +86,20 @@ public class ProfileController {
             return ResponseEntity.status(4000).body(new ApiResponse(4000, "No file uploaded", null));
         }
         try {
-            // 파일 이름 생성 (클라이언트 파일 이름을 사용하거나 UUID를 생성하여 사용할 수 있음)
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            int jwt_user_id = jwtService.getUserIdFromJwt(jwtToken); // JWT 토큰 검증
+
+            // 파일 확장자를 유지하여 파일 이름 생성
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFileName != null && originalFileName.contains(".")) {
+                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+            String fileName = jwt_user_id + fileExtension;
             Path filePath = Paths.get(DIRECTORY, fileName);
             // 파일 저장
             Files.copy(file.getInputStream(), filePath);
 
-            String fileDownloadUri = "http://localhost:8000/profile/files/" + fileName;
+            String fileDownloadUri = "http://13.48.223.79:8080/profile/files/" + fileName;
             return ResponseEntity.ok(new ApiResponse(1000, "File uploaded successfully", fileDownloadUri));
         } catch (IOException e) {
             e.printStackTrace();
