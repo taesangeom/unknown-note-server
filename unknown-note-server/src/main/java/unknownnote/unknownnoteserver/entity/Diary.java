@@ -3,6 +3,7 @@ package unknownnote.unknownnoteserver.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import unknownnote.unknownnoteserver.cipher.CipherService;
 
 import java.sql.Timestamp;
 
@@ -32,4 +33,22 @@ public class Diary {
     @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
     private int openable;
 
+    // 일기 내용 AES 256 암호화를 사용해서 관리
+    private static CipherService cipherService = new CipherService();
+
+    public void setDContent(String dContent) {
+        try {
+            this.dContent = cipherService.encrypt(dContent); // 암호화된 내용 저장
+        } catch (Exception e) {
+            throw new RuntimeException("내용 암호화 중 오류 발생", e);
+        }
+    }
+
+    public String getDContent() {
+        try {
+            return cipherService.decrypt(this.dContent); // 복호화된 내용 반환
+        } catch (Exception e) {
+            throw new RuntimeException("내용 복호화 중 오류 발생", e);
+        }
+    }
 }
