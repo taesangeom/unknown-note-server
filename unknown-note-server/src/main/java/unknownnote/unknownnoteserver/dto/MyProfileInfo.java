@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 public class MyProfileInfo {
     private UserInfo user;
-    private int essayCnt;
-    private int journalCnt;
+    private int essay_cnt;
+    private int journal_cnt;
 
     private List<RecentGraph>  recent_graph;
     private List<MonthlyActivity> monthly_act;
