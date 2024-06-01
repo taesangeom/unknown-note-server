@@ -1,11 +1,12 @@
 package unknownnote.unknownnoteserver.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.*;
-import unknownnote.unknownnoteserver.entity.ECategory;
 import unknownnote.unknownnoteserver.repository.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -42,7 +43,9 @@ public class EssayService {
 
             String category = essayDTO.getECategory();
             if (category != null) {
-                essayEntity.setECategory(ECategory.fromString(category));
+                essayEntity.setECategory(category.toLowerCase());
+            } else {
+                essayEntity.setECategory("DEFAULT");
             }
 
             User userEntity = userRepository.findById(userid).orElseThrow(() -> new RuntimeException("User not found: " + userid));
@@ -54,6 +57,7 @@ public class EssayService {
 
             return null;
         } catch (Exception e) {
+            // e.printStackTrace(); //디버깅용 결과 모두 보여주기 위해
             throw new RuntimeException("Unexpected Error during saveNewEssay()", e);
         }
     }
@@ -64,8 +68,9 @@ public class EssayService {
             Essay essayEntity = essayOptional.get();
 
             if (essayEntity.getUser().getUserId() == userId) {
+
                 essayEntity.setEContent(eContent);
-                essayEntity.setECategory(ECategory.fromString(eCategory));
+                essayEntity.setECategory(eCategory);
                 essayEntity.setOpenable(openable);
                 essayEntity.setETitle(eTitle);
 

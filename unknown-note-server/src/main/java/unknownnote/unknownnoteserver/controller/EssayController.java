@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
-import unknownnote.unknownnoteserver.entity.*;
+import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.service.ErrorService;
 import unknownnote.unknownnoteserver.service.EssayService;
-import unknownnote.unknownnoteserver.jwt.JwtService;
 import unknownnote.unknownnoteserver.entity.User;
 import unknownnote.unknownnoteserver.dto.ErrorResponse;
+import unknownnote.unknownnoteserver.jwt.*;
 
 
 import java.util.HashMap;
@@ -34,6 +34,8 @@ public class EssayController {
     @Autowired
     private ErrorService errorService;
 
+    @Autowired
+    private JwtHandler jwtHandler;
     private static final Logger logger = LoggerFactory.getLogger(EssayController.class);
 
     @Autowired
@@ -75,7 +77,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -100,7 +102,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -125,7 +127,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -150,7 +152,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -286,7 +288,7 @@ public class EssayController {
                 essayInfo.put("etitle", essay.getETitle());
                 essayInfo.put("econtent", essay.getEContent());
                 essayInfo.put("etime", essay.getEssayTime());
-                essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
+                essayInfo.put("ecategory", essay.getECategory());
 
                 User user = essay.getUser();
                 Map<String, Object> userInfo = new HashMap<>();

@@ -22,15 +22,14 @@ public class Essay {
     @Column(name = "e_content")
     private String eContent;
 
-    @Column(name = "e_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "e_time",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp essayTime;
 
     @Column(name = "e_likes", columnDefinition = "INT DEFAULT 0")
     private int eLikes;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "e_category")
-    private ECategory eCategory;
+    private String ECategory;
 
     @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
     private int openable;
@@ -41,13 +40,5 @@ public class Essay {
 
     public User getUser() {
         return this.user;
-    }
-
-    @PrePersist
-    @PreUpdate
-    public void prePersistUpdate() {
-        if (this.eCategory != null) {
-            this.eCategory = ECategory.fromString(this.eCategory.name().toLowerCase());
-        }
     }
 }
