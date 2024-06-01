@@ -35,8 +35,6 @@ public class EssayController {
     @Autowired
     private ErrorService errorService;
 
-    @Autowired
-    private JwtHandler jwtHandler;
     private static final Logger logger = LoggerFactory.getLogger(EssayController.class);
 
     @Autowired
