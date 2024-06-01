@@ -68,7 +68,7 @@ public class UserService {
         } else {
             img_name = null;
         }
-        String img_file = "http://localhost:8000/profile/files/" + img_name;
+        String img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
 
         UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction(), img_file);
 
