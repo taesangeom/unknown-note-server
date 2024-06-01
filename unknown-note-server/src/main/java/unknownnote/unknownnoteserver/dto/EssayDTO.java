@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Data
 @RequiredArgsConstructor
 public class EssayDTO {
-    @JsonProperty("eTitle")
+    @JsonProperty("etitle")
     private String eTitle;
-    @JsonProperty("eContent")
+    @JsonProperty("econtent")
     private String eContent;
     @JsonProperty("openable")
     private int openable;
-    @JsonProperty("eLikes")
+    @JsonProperty("elikes")
     private int eLikes;
-    @JsonProperty("eCategory")
+    @JsonProperty("ecategory")
     private String eCategory;
 }
