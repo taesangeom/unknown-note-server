@@ -11,4 +11,5 @@ public class UserInfoRequest {
     private int userId;
     private String nickname;
     private String introduction;
+    private String profile_img;
 }
