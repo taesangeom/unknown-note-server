@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
-import unknownnote.unknownnoteserver.entity.Essay;
+import unknownnote.unknownnoteserver.entity.*;
 import unknownnote.unknownnoteserver.service.ErrorService;
 import unknownnote.unknownnoteserver.service.EssayService;
 import unknownnote.unknownnoteserver.jwt.JwtService;
@@ -75,7 +75,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -100,7 +100,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -125,7 +125,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -150,7 +150,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -213,9 +213,9 @@ public class EssayController {
                 return ResponseEntity.badRequest().body("{\"code\": 400, \"message\": \"essayId is required\"}");
             }
             int openable = (int) requestBody.get("openable");
-            String eContent = (String) requestBody.get("eContent");
-            String eCategory = (String) requestBody.get("eCategory");
-            String eTitle = (String) requestBody.get("eTitle");
+            String eContent = (String) requestBody.get("econtent");
+            String eCategory = (String) requestBody.get("ecategory");
+            String eTitle = (String) requestBody.get("etitle");
 
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -286,7 +286,7 @@ public class EssayController {
                 essayInfo.put("etitle", essay.getETitle());
                 essayInfo.put("econtent", essay.getEContent());
                 essayInfo.put("etime", essay.getEssayTime());
-                essayInfo.put("ecategory", essay.getECategory());
+                essayInfo.put("ecategory", essay.getECategory().toString().toLowerCase());
 
                 User user = essay.getUser();
                 Map<String, Object> userInfo = new HashMap<>();
