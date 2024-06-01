@@ -74,7 +74,7 @@ public class DiaryController {
             return ResponseEntity.ok(errorService.setError(2000,"토큰 해석중 오류 발생"));
         } catch(RuntimeException e){
             logger.error("Unexpected Error during SaveNewDiary()", e); // 예외 발생 시 로깅
-            return ResponseEntity.ok(errorService.setError(2000,"서비스 일기저장 함수에서 예상치 못한 에러발생"));
+            return ResponseEntity.ok(errorService.setError(1007,"서비스 일기저장 함수에서 예상치 못한 에러발생"));
         }catch(Exception e){
             //e.printStackTrace(); // 운영시는 가릴것
             logger.error("Unexpected error during saving diary", e); // 예외 발생 시 로깅
