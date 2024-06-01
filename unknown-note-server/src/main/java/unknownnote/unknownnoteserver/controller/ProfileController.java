@@ -88,7 +88,13 @@ public class ProfileController {
         }
         try {
             int jwt_user_id = jwtService.getUserIdFromJwt(jwtToken); // JWT 토큰 검증
-
+            
+            // 디렉토리 존재 여부 확인 및 생성
+            Path directoryPath = Paths.get(DIRECTORY);
+            if (!Files.exists(directoryPath)) {
+                Files.createDirectories(directoryPath);
+            }
+            
             // 파일 확장자를 유지하여 파일 이름 생성
             String originalFileName = file.getOriginalFilename();
             String fileExtension = "";
