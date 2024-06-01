@@ -96,7 +96,7 @@ public class DiaryService {
         dto.setDiaryid(diary.getDiaryId());
         dto.setDcontent(diary.getDContent());
         //한국 시간으로
-        dto.setDtime(diary.getDiaryTime().toLocalDateTime().minusHours(9));
+        dto.setDtime(diary.getDiaryTime().toLocalDateTime());
         dto.setDtag(diary.getDTag());
         dto.setUserid(diary.getUser().getUserId());
         dto.setOpenable(diary.getOpenable());
