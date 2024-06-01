@@ -77,17 +77,18 @@ public class MyProfileService {
         String jpgFilePath = directoryPath + userId + ".jpg";
         String pngFilePath = directoryPath + userId + ".png";
         String img_name;
+        String img_file;
 
         // 파일 존재 여부 확인
         if (Files.exists(Paths.get(jpgFilePath))) {
             img_name = userId + ".jpg";
+            img_file = "http://13.48.223.79:8080/profile/files" + img_name;
         } else if (Files.exists(Paths.get(pngFilePath))) {
             img_name = userId + ".png";
+            img_file = "http://13.48.223.79:8080/profile/files" + img_name;
         } else {
-            img_name = null;
+            img_file = "";
         }
-        String img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
-
         UserInfo userInfo = new UserInfo(user.getUserId(), user.getNickname(), user.getIntroduction(), img_file);
 
         //MyprofileInfo 작성
