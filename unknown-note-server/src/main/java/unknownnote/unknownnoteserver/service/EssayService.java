@@ -45,7 +45,7 @@ public class EssayService {
             if (category != null) {
                 essayEntity.setECategory(category.toLowerCase());
             } else {
-                essayEntity.setECategory("DEFAULT");
+                essayEntity.setECategory(null);
             }
 
             User userEntity = userRepository.findById(userid).orElseThrow(() -> new RuntimeException("User not found: " + userid));
