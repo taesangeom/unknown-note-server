@@ -12,6 +12,8 @@ import unknownnote.unknownnoteserver.jwt.JWTUtil;
 import unknownnote.unknownnoteserver.repository.UserRepository;
 import unknownnote.unknownnoteserver.util.SocialUserInfoFetcher;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 
