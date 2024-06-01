@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -97,7 +98,7 @@ public class ProfileController {
             String fileName = jwt_user_id + fileExtension;
             Path filePath = Paths.get(DIRECTORY, fileName);
             // 파일 저장
-            Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = "http://13.48.223.79:8080/profile/files/" + fileName;
             return ResponseEntity.ok(new ApiResponse(1000, "File uploaded successfully", fileDownloadUri));
