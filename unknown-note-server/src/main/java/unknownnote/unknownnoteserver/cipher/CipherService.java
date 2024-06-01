@@ -4,32 +4,36 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import org.apache.commons.codec.binary.Hex;
 
 @Service
 public class CipherService {
 
-    @Value("${cipher.algorithm}")
-    private String ALGORITHM;
-
-    @Value("${cipher.secret-key}")
-    private String SECRET_KEY;
+    private static String SECRET_KEY = CipherConstants.PRIVATE_KEY;
 
     // 암호화 메서드
     public String encrypt(String data) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM); // 알고리즘 인스턴스
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM)); // 암호화 모드 설정 후, 시크릿 키 적용
-        byte[] encrypted = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)); // 암호화
-        return Base64.getEncoder().encodeToString(encrypted); // 암호화된 데이터를 Base64 인코딩하여 문자열로 반환
+        SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes("UTF-8"), "AES");
+        IvParameterSpec IV = new IvParameterSpec(SECRET_KEY.substring(0,16).getBytes());
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.ENCRYPT_MODE, secretKey, IV);
+        byte[] encrpytionByte = c.doFinal(data.getBytes("UTF-8"));
+        return Hex.encodeHexString(encrpytionByte);
+
     }
 
     // 복호화 메서드
     public String decrypt(String encryptedData) throws Exception {
-        byte[] decoded = Base64.getDecoder().decode(encryptedData); // 암호화된 데이터를 Base64 디코딩
-        Cipher cipher = Cipher.getInstance(ALGORITHM); // 암호화 알고리즘 인스턴스
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM)); // 복호화 모드를 설정하고 비밀 키를 적용
-        return new String(cipher.doFinal(decoded), StandardCharsets.UTF_8); // 데이터를 복호화하고, 결과를 문자열로 반환
+        SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes("UTF-8"), "AES");
+        IvParameterSpec IV = new IvParameterSpec(SECRET_KEY.substring(0,16).getBytes());
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.DECRYPT_MODE, secretKey, IV);
+        byte[] decodeByte = Hex.decodeHex(encryptedData.toCharArray());
+        return new String(c.doFinal(decodeByte), "UTF-8");
+
     }
 }
