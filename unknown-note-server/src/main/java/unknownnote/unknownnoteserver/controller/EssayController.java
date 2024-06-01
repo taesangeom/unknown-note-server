@@ -72,10 +72,10 @@ public class EssayController {
                 for (Essay essay : essays) {
                     Map<String, Object> essayInfo = new HashMap<>();
                     essayInfo.put("essayid", essay.getEssayId());
-                    essayInfo.put("eTitle", essay.getETitle());
-                    essayInfo.put("eContent", essay.getEContent());
+                    essayInfo.put("etitle", essay.getETitle());
+                    essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("eCategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -97,10 +97,10 @@ public class EssayController {
                 for (Essay essay : likedEssays) {
                     Map<String, Object> essayInfo = new HashMap<>();
                     essayInfo.put("essayid", essay.getEssayId());
-                    essayInfo.put("eTitle", essay.getETitle());
-                    essayInfo.put("eContent", essay.getEContent());
+                    essayInfo.put("etitle", essay.getETitle());
+                    essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("eCategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -122,10 +122,10 @@ public class EssayController {
                 for (Essay essay : essays) {
                     Map<String, Object> essayInfo = new HashMap<>();
                     essayInfo.put("essayid", essay.getEssayId());
-                    essayInfo.put("eTitle", essay.getETitle());
-                    essayInfo.put("eContent", essay.getEContent());
+                    essayInfo.put("etitle", essay.getETitle());
+                    essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("eCategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -147,10 +147,10 @@ public class EssayController {
                 for (Essay essay : essaysPage.getContent()) {
                     Map<String, Object> essayInfo = new HashMap<>();
                     essayInfo.put("essayid", essay.getEssayId());
-                    essayInfo.put("eTitle", essay.getETitle());
-                    essayInfo.put("eContent", essay.getEContent());
+                    essayInfo.put("etitle", essay.getETitle());
+                    essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("eCategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
