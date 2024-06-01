@@ -66,10 +66,10 @@ public class UserService {
         // 파일 존재 여부 확인
         if (Files.exists(Paths.get(jpgFilePath))) {
             img_name = userId + ".jpg";
-            img_file = "http://13.48.223.79:8080/profile/files" + img_name;
+            img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
         } else if (Files.exists(Paths.get(pngFilePath))) {
             img_name = userId + ".png";
-            img_file = "http://13.48.223.79:8080/profile/files" + img_name;
+            img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
         } else {
             img_file = "";
         }
