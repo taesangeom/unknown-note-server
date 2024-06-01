@@ -110,7 +110,7 @@ public class ProfileController {
             return ResponseEntity.ok(new ApiResponse(1000, "File uploaded successfully", fileDownloadUri));
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.ok(errorService.setError(2000,"File uploaded failed"));
+            return ResponseEntity.ok(errorService.setError(4000,"File uploaded failed"));
         }
     }
 
