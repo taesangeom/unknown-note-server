@@ -102,8 +102,8 @@ public class MyProfileService {
         return response;
     }
     public List<RecentGraph> getRecentGraphData(int userId) {
-        LocalDate endDate = LocalDate.now().plusDays(3);
-        LocalDate startDate = endDate.minusMonths(3);
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(30);
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atStartOfDay();
@@ -169,8 +169,8 @@ public class MyProfileService {
     }
 
     public List<MonthlyActivity> getMonthlyActivities(int userId) {
-        LocalDate endDate = LocalDate.now().plusDays(3);
-        LocalDate startDate = endDate.minusMonths(3);
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(90);
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atStartOfDay();
