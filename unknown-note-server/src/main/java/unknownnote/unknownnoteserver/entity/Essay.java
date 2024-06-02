@@ -31,9 +31,6 @@ public class Essay {
     @Column(name = "e_category")
     private String ECategory;
 
-    @Column(name = "openable", columnDefinition = "INT DEFAULT 1")
-    private int openable;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
