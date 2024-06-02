@@ -22,6 +22,6 @@ public interface EssayRepository extends JpaRepository<Essay, Integer> {
     @Query("SELECT DISTINCT e FROM Essay e WHERE e.user.userId = :userId")
     Page<Essay> findByUser_UserId(@Param("userId") int userId, Pageable pageable);
 
-    @Query("SELECT DISTINCT e FROM Essay e WHERE e.ECategory = :category ORDER BY e.essayTime DESC")
+    @Query("SELECT  DISTINCT e FROM Essay e WHERE e.ECategory = :category ORDER BY e.essayTime DESC, e.essayId DESC")
     Page<Essay> findEssaysByCategory(@Param("category") String category, Pageable pageable);
 }
