@@ -78,8 +78,14 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
-                    essayInfo.put("userid", essay.getUser().getUserId());
-                    essayInfo.put("openable", essay.getOpenable());
+
+                    User user = essay.getUser();
+                    Map<String, Object> userInfo = new HashMap<>();
+                    userInfo.put("user_id", user.getUserId());
+                    userInfo.put("nickname", user.getNickname());
+                    userInfo.put("introduction", user.getIntroduction());
+
+                    essayInfo.put("user", userInfo);
                     essaysInfo.add(essayInfo);
                 }
 
@@ -102,8 +108,14 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
-                    essayInfo.put("userid", essay.getUser().getUserId());
-                    essayInfo.put("openable", essay.getOpenable());
+
+                    User user = essay.getUser();
+                    Map<String, Object> userInfo = new HashMap<>();
+                    userInfo.put("user_id", user.getUserId());
+                    userInfo.put("nickname", user.getNickname());
+                    userInfo.put("introduction", user.getIntroduction());
+
+                    essayInfo.put("user", userInfo);
                     essaysInfo.add(essayInfo);
                 }
 
@@ -127,8 +139,14 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
-                    essayInfo.put("userid", essay.getUser().getUserId());
-                    essayInfo.put("openable", essay.getOpenable());
+
+                    User user = essay.getUser();
+                    Map<String, Object> userInfo = new HashMap<>();
+                    userInfo.put("user_id", user.getUserId());
+                    userInfo.put("nickname", user.getNickname());
+                    userInfo.put("introduction", user.getIntroduction());
+
+                    essayInfo.put("user", userInfo);
                     essaysInfo.add(essayInfo);
                 }
 
@@ -151,8 +169,14 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
-                    essayInfo.put("userid", essay.getUser().getUserId());
-                    essayInfo.put("openable", essay.getOpenable());
+
+                    User user = essay.getUser();
+                    Map<String, Object> userInfo = new HashMap<>();
+                    userInfo.put("user_id", user.getUserId());
+                    userInfo.put("nickname", user.getNickname());
+                    userInfo.put("introduction", user.getIntroduction());
+
+                    essayInfo.put("user", userInfo);
                     essaysInfo.add(essayInfo);
                 }
 
