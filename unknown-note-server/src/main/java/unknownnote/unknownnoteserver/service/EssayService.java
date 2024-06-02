@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import unknownnote.unknownnoteserver.repository.UserSubscribeRepository;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
@@ -138,17 +139,14 @@ public class EssayService {
     }
 
 
-    public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
+   /* public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
 
-        // 유저 존재 여부 확인
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 구독 목록 가져오기
         List<UserSubscribe> subscriptions = userSubscribeRepository.findByFollowingId(userId); // followingId로 변경 (수정된 부분)
 
         List<Essay> essays = new ArrayList<>();
 
-        // 각 구독한 유저의 에세이 가져오기
         for (UserSubscribe subscription : subscriptions) {
             List<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId()); // userId로 변경 (수정된 부분)
             essays.addAll(subscribedUserEssays);
@@ -157,6 +155,18 @@ public class EssayService {
         // 중복 제거 및 페이지 변환
         List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
         return toPage(distinctEssays, pageable);
+    }*/
+
+    public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
+        userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<UserSubscribe> subscriptions = userSubscribeRepository.findByFollowingId(userId);
+
+        List<Integer> subscribedUserIds = subscriptions.stream()
+                .map(UserSubscribe::getUserId)
+                .collect(Collectors.toList());
+
+        return essayRepository.findEssaysByUserIds(subscribedUserIds, pageable); // 수정된 부분
     }
 
     private Page<Essay> toPage(List<Essay> list, Pageable pageable) {
