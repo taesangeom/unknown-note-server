@@ -31,6 +31,8 @@ import java.util.Optional;
 public class EssayController {
 
     private final EssayService essayService;
+    
+    @Autowired
     private final JwtService jwtService;
 
     @Autowired
