@@ -15,7 +15,6 @@ import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.service.ErrorService;
 import unknownnote.unknownnoteserver.service.EssayService;
 import unknownnote.unknownnoteserver.entity.User;
-import unknownnote.unknownnoteserver.dto.ErrorResponse;
 import unknownnote.unknownnoteserver.jwt.*;
 
 
@@ -45,7 +44,7 @@ public class EssayController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) Integer page,
@@ -62,7 +61,7 @@ public class EssayController {
 
             logger.debug("Querying essays with category: {}", category);
 
-        Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정
+            Pageable pageable = PageRequest.of(page == null ? 0 : page, size);
 
         if (category == null) {
             Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
@@ -202,7 +201,85 @@ public class EssayController {
         logger.error("Unexpected exception occurred while loading essays", e);
         return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
     }
-}
+}*/
+    @GetMapping
+    public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                            @RequestParam(required = false) String category,
+                                            @RequestParam(required = false) Integer page,
+                                            @RequestParam(required = false, defaultValue = "20") int size) {
+        try {
+            String token;
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                token = jwtToken.replace("Bearer ", "");
+            } else {
+                token = jwtToken;
+            }
+
+            int userId = jwtService.getUserIdFromJwt(token);
+
+            logger.debug("Querying essays with category: {}", category);
+
+            Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 주석: 페이징 설정
+
+            Page<Essay> essaysPage;
+            if (category == null) {
+                essaysPage = essayService.findUserEssays(userId, pageable);
+            } else if (category.equals("favs")) {
+                essaysPage = essayService.findAllLikedEssays(userId, pageable); // 주석: 페이지로 변경
+            } else if (category.equals("subs")) {
+                essaysPage = essayService.findAllEssaysBySubscribedUsers(userId, pageable); // 주석: 페이지로 변경
+            } else if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
+                essaysPage = essayService.findEssaysByCategory(category.toLowerCase(), pageable);
+            } else {
+                return ResponseEntity.ok(errorService.setError(1003, "에세이 저장 실패"));
+            }
+
+            return buildEssayResponse(essaysPage);
+        } catch (IllegalStateException e) {
+            logger.error("jwtToken is not in proper form / Outdated", e);
+            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
+        } catch (JwtException e) {
+            logger.error("Error during Decoding Token", e);
+            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 해석 오류"));
+        } catch (Exception e) {
+            logger.error("Unexpected exception occurred while loading essays", e);
+            return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
+        }
+    }
+
+    // Page<Essay> 객체를 처리하여 응답을 생성하는 메서드
+    private ResponseEntity<Object> buildEssayResponse(Page<Essay> essaysPage) {
+        if (essaysPage != null && !essaysPage.isEmpty()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1000);
+
+            List<Map<String, Object>> essaysInfo = new ArrayList<>();
+            for (Essay essay : essaysPage.getContent()) {
+                Map<String, Object> essayInfo = new HashMap<>();
+                essayInfo.put("essayid", essay.getEssayId());
+                essayInfo.put("etitle", essay.getETitle());
+                essayInfo.put("econtent", essay.getEContent());
+                essayInfo.put("etime", essay.getEssayTime());
+                essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                essayInfo.put("elikes", essay.getELikes());
+
+                User user = essay.getUser();
+                Map<String, Object> userInfo = new HashMap<>();
+                userInfo.put("user_id", user.getUserId());
+                userInfo.put("nickname", user.getNickname());
+                userInfo.put("introduction", user.getIntroduction());
+
+                essayInfo.put("user", userInfo);
+                essaysInfo.add(essayInfo);
+            }
+
+            response.put("data", essaysInfo);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
+        }
+    }
+
 
 
     @GetMapping("/{userId}")
