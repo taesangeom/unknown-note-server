@@ -303,7 +303,7 @@ public class EssayController {
             if (essayId == null) {
                 return ResponseEntity.badRequest().body("{\"code\": 400, \"message\": \"essayId is required\"}");
             }
-            int openable = (int) requestBody.get("openable");
+            //int openable = (int) requestBody.get("openable");
             String eContent = (String) requestBody.get("econtent");
             String eCategory = (String) requestBody.get("ecategory");
             String eTitle = (String) requestBody.get("etitle");
@@ -317,7 +317,7 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory.toLowerCase(), eTitle, openable , userId);
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory.toLowerCase(), eTitle , userId);
             if (updatedEssay != null) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
