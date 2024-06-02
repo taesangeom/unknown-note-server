@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import  org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import unknownnote.unknownnoteserver.entity.Essay;
+import unknownnote.unknownnoteserver.entity.UserSubscribe;
 import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.*;
@@ -29,8 +31,7 @@ public class EssayService {
     @Autowired
     private UserSubscribeRepository userSubscribeRepository;
 
-    @Autowired
-    private UserViewedEssaysRepository userViewedEssaysRepository;
+    private static final Logger logger = LoggerFactory.getLogger(EssayService.class);
 
     public Essay saveNewEssay(EssayDTO essayDTO, int userId) {
         try {
@@ -138,16 +139,32 @@ public class EssayService {
 
 
     public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
+        logger.info("Finding all essays by subscribed users for userId: {}", userId);
+
+        // 유저 존재 여부 확인
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        List<UserSubscribe> subscriptions = userSubscribeRepository.findByUserId(userId);
+
+        // 구독 목록 가져오기
+        List<UserSubscribe> subscriptions = userSubscribeRepository.findByFollowingId(userId); // followingId로 변경 (수정된 부분)
+        logger.info("Subscriptions found for userId {}: {}", userId, subscriptions);
+
         List<Essay> essays = new ArrayList<>();
 
+        // 각 구독한 유저의 에세이 가져오기
         for (UserSubscribe subscription : subscriptions) {
-            Page<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId(), pageable);
-            essays.addAll(subscribedUserEssays.getContent());
+            logger.info("Finding essays for subscribed userId: {}", subscription.getUserId()); // userId로 변경 (수정된 부분)
+            List<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId()); // userId로 변경 (수정된 부분)
+            logger.info("Essays found for userId {}: {}", subscription.getUserId(), subscribedUserEssays);
+            essays.addAll(subscribedUserEssays);
         }
 
+        if (essays.isEmpty()) {
+            logger.warn("No essays found for any subscribed users for userId: {}", userId);
+        }
+
+        // 중복 제거 및 페이지 변환
         List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
+        logger.info("Distinct essays found: {}", distinctEssays);
         return toPage(distinctEssays, pageable);
     }
 
@@ -157,6 +174,7 @@ public class EssayService {
         List<Essay> subList = list.subList(start, end);
         return new PageImpl<>(subList, pageable, list.size());
     }
+
 
     public Page<Essay> findUserEssays(int userId, Pageable pageable) {
         return essayRepository.findByUser_UserId(userId, pageable);
