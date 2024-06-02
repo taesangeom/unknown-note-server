@@ -49,7 +49,7 @@ public class EssayController {
     public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) Integer page,
-                                            @RequestParam(defaultValue = "20") int size) {
+                                            @RequestParam(required = false, defaultValue = "20") int size) {
         try {
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -180,7 +180,7 @@ public class EssayController {
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUserEssays(@PathVariable int userId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                                 @RequestParam(required = false) Integer page,
-                                                @RequestParam(defaultValue = "20") int size) {
+                                                @RequestParam(required = false, defaultValue = "20") Integer size) {
         try {
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -191,7 +191,7 @@ public class EssayController {
 
             userId = jwtService.getUserIdFromJwt(token);
 
-        Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정 해줌
+        Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정 해줌, size는 FE에서 설정.
 
         Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
         if (essaysPage != null && !essaysPage.isEmpty()) {
@@ -293,7 +293,7 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(jwtToken);
 
-            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable , userId);
+            Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory.toLowerCase(), eTitle, openable , userId);
             if (updatedEssay != null) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
