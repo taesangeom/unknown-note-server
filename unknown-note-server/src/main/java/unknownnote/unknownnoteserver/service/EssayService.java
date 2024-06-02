@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.*;
@@ -11,8 +13,6 @@ import unknownnote.unknownnoteserver.repository.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
@@ -68,9 +68,8 @@ public class EssayService {
             Essay essayEntity = essayOptional.get();
 
             if (essayEntity.getUser().getUserId() == userId) {
-
                 essayEntity.setEContent(eContent);
-                essayEntity.setECategory(eCategory);
+                essayEntity.setECategory(eCategory.toLowerCase());
                 essayEntity.setOpenable(openable);
                 essayEntity.setETitle(eTitle);
 
@@ -135,8 +134,7 @@ public class EssayService {
 
 
     //카테고리순 나열 poem, novel, whisper있음
-    public Page<Essay> findEssaysByCategory(String category, int page) {
-        Pageable pageable = PageRequest.of(page, 20);
+    public Page<Essay> findEssaysByCategory(String category, Pageable pageable) {
         return essayRepository.findEssaysByCategory(category, pageable);
     }
 
@@ -152,12 +150,8 @@ public class EssayService {
         }
         return essays;
     }
-    public List<Essay> findAll() {
-        return essayRepository.findAll();
-    }
 
-    public Page<Essay> findUserEssays(int userId, int page) {
-        Pageable pageable = PageRequest.of(page, 20);
+    public Page<Essay> findUserEssays(int userId, Pageable pageable) {
         return essayRepository.findByUser_UserId(userId, pageable);
     }
 }
