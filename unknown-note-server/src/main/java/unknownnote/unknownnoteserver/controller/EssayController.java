@@ -68,7 +68,9 @@ public class EssayController {
             } else if (category.equals("favs")) {
                 essaysPage = essayService.findAllLikedEssays(userId, pageable);
             } else if (category.equals("subs")) {
+                logger.info("Finding essays for category 'subs' for userId: {}", userId);
                 essaysPage = essayService.findAllEssaysBySubscribedUsers(userId, pageable);
+                logger.info("Found essays for subscribed users: {}", essaysPage.getContent());
             } else if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
                 essaysPage = essayService.findEssaysByCategory(category.toLowerCase(), pageable);
             } else {
@@ -87,7 +89,6 @@ public class EssayController {
         }
     }
 
-    // Page<Essay> 객체를 처리하여 응답을 생성하는 메서드
     private ResponseEntity<Object> buildEssayResponse(Page<Essay> essaysPage) {
         if (essaysPage != null && !essaysPage.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
