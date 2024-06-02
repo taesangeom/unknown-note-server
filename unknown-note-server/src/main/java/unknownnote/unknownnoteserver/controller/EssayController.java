@@ -287,10 +287,10 @@ public class EssayController {
             logger.error("Error during Decoding Token", e); // 예외 발생 시 로깅
             return ResponseEntity.ok(errorService.setError(2000,"토큰 해석중 오류 발생"));
         } catch(RuntimeException e){
-            logger.error("Unexpected Error during SaveNewDiary()", e);
-            return ResponseEntity.ok(errorService.setError(1006,"서비스 에세이 저장 함수에서 예상치 못한 에러발생"));
+            logger.error("Unexpected Error during SaveNewEssay()", e);
+            return ResponseEntity.ok(errorService.setError(1002,"서비스 에세이 저장 함수에서 예상치 못한 에러발생"));
         }catch(Exception e){
-            logger.error("Unexpected error during saving diary", e);
+            logger.error("Unexpected error during saving Essay", e);
             return ResponseEntity.ok(errorService.setError(4000,"에세이 저장 중 예상치 못한 에러 발생"));
         }
 
@@ -333,7 +333,7 @@ public class EssayController {
             logger.error("Error during Decoding Token", e); // 예외 발생 시 로깅
             return ResponseEntity.ok(errorService.setError(2000,"jwt 토큰 해석 오류"));
         } catch(Exception e){
-            logger.error("Unexpected error during changediary()", e); // 예외 발생 시 로깅
+            logger.error("Unexpected error during changeEssay()", e); // 예외 발생 시 로깅
             return ResponseEntity.ok(errorService.setError(4000,"에세이 패치 중 예상치 못한 에러발생"));
         }
     }
