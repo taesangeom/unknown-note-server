@@ -12,13 +12,22 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface EssayRepository extends JpaRepository<Essay, Integer> {
+
     @Query("SELECT COUNT(e) FROM Essay e WHERE e.user.userId = :userId")
     int countByUserId(@Param("userId") int userId);
+
     List<Essay> findByUser_UserIdAndEssayTimeBetween(int userId, Timestamp start, Timestamp end);
+
     List<Essay> findByUser(User user);
+
+    // 페이징 없는 메서드 추가 (수정된 부분)
+    @Query("SELECT DISTINCT e FROM Essay e WHERE e.user.userId = :userId")
+    List<Essay> findByUser_UserId(@Param("userId") int userId);
+
+    // 기존 페이징 메서드 유지
     @Query("SELECT DISTINCT e FROM Essay e WHERE e.user.userId = :userId")
     Page<Essay> findByUser_UserId(@Param("userId") int userId, Pageable pageable);
 
-    @Query("SELECT  DISTINCT e FROM Essay e WHERE e.ECategory = :category ORDER BY e.essayTime DESC, e.essayId DESC")
+    @Query("SELECT DISTINCT e FROM Essay e WHERE e.ECategory = :category ORDER BY e.essayTime DESC, e.essayId DESC")
     Page<Essay> findEssaysByCategory(@Param("category") String category, Pageable pageable);
 }
