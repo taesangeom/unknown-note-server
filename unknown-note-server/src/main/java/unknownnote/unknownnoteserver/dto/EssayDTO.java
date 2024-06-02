@@ -10,8 +10,6 @@ public class EssayDTO {
     private String eTitle;
     @JsonProperty("econtent")
     private String eContent;
-    @JsonProperty("openable")
-    private int openable;
     @JsonProperty("elikes")
     private int eLikes;
     @JsonProperty("ecategory")
