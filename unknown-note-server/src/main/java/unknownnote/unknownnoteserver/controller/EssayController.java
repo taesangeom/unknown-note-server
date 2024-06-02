@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ import java.util.Optional;
 public class EssayController {
 
     private final EssayService essayService;
-    
+
     @Autowired
     private final JwtService jwtService;
 
@@ -50,29 +49,26 @@ public class EssayController {
     public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) Integer page,
-                                            Pageable pageable) {
-        String token;
-        if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
-            token = jwtToken.replace("Bearer ", "");
-        } else {
-            token = jwtToken;
-        }
-
-        int userId;
+                                            @RequestParam(defaultValue = "20") int size) {
         try {
-            userId = jwtService.getUserIdFromJwt(token);
-        } catch (Exception e) {
-            return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
-        }
+            String token;
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                token = jwtToken.replace("Bearer ", "");
+            } else {
+                token = jwtToken;
+            }
 
-        logger.debug("Querying essays with category: {}", category);
+            int userId = jwtService.getUserIdFromJwt(token);
+
+            logger.debug("Querying essays with category: {}", category);
+
+        Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정
 
         if (category == null) {
             Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
             if (essaysPage != null && !essaysPage.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                //response.put("message", "Fetched all essays");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : essaysPage.getContent()) {
@@ -97,7 +93,6 @@ public class EssayController {
             if (!likedEssays.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                //response.put("message", "Fetched liked essays");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : likedEssays) {
@@ -147,7 +142,6 @@ public class EssayController {
             if (essaysPage != null && !essaysPage.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                //response.put("message", "Successfully fetched essays by category");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : essaysPage.getContent()) {
@@ -168,17 +162,25 @@ public class EssayController {
                 return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1003, \"message\": \"Invalid type parameter\"}");
+            return ResponseEntity.ok(errorService.setError(1003,"에세이 저장 실패"));
         }
+    } catch (IllegalStateException e) {
+        logger.error("jwtToken is not in proper form / Outdated", e);
+        return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
+    } catch (JwtException e) {
+        logger.error("Error during Decoding Token", e);
+        return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 해석 오류"));
+    } catch (Exception e) {
+        logger.error("Unexpected exception occurred while loading essays", e);
+        return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
     }
+}
+
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUserEssays(@PathVariable int userId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
-                                                                                    @RequestParam(required = false) String category,
-                                                                                    @RequestParam(required = false) Integer page,
-                                                                                     Pageable pageable)
-    {
+                                                @RequestParam(required = false) Integer page,
+                                                @RequestParam(defaultValue = "20") int size) {
         try {
             String token;
             if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
@@ -186,6 +188,10 @@ public class EssayController {
             } else {
                 token = jwtToken;
             }
+
+            userId = jwtService.getUserIdFromJwt(token);
+
+        Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정 해줌
 
         Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
         if (essaysPage != null && !essaysPage.isEmpty()) {
@@ -217,16 +223,16 @@ public class EssayController {
         } else {
             return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
         }
-        } catch (IllegalStateException e) {
-            logger.error("jwtToken is not in proper form / Outdated", e);
-            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
-        } catch (JwtException e) {
-            logger.error("Error during Decoding Token", e);
-            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 해석 오류"));
-        } catch (Exception e) {
-            logger.error("Unexpected exception occurred while loading essays", e);
-            return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
-        }
+    } catch (IllegalStateException e) {
+        logger.error("jwtToken is not in proper form / Outdated", e);
+        return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
+    } catch (JwtException e) {
+        logger.error("Error during Decoding Token", e);
+        return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 해석 오류"));
+    } catch (Exception e) {
+        logger.error("Unexpected exception occurred while loading essays", e);
+        return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
+    }
     }
 
     @PostMapping
