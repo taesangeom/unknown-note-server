@@ -13,6 +13,7 @@ import unknownnote.unknownnoteserver.repository.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
@@ -37,7 +38,6 @@ public class EssayService {
             Essay essayEntity = new Essay();
             essayEntity.setETitle(essayDTO.getETitle());
             essayEntity.setEContent(essayDTO.getEContent());
-            essayEntity.setOpenable(essayDTO.getOpenable());
             essayEntity.setEssayTime(java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
             essayEntity.setELikes(essayDTO.getELikes());
 
@@ -57,12 +57,11 @@ public class EssayService {
 
             return null;
         } catch (Exception e) {
-            // e.printStackTrace(); //디버깅용 결과 모두 보여주기 위해
             throw new RuntimeException("Unexpected Error during saveNewEssay()", e);
         }
     }
 
-    public Essay updateEssay(int essayId, String eContent, String eCategory, String eTitle, int openable, int userId) {
+    public Essay updateEssay(int essayId, String eContent, String eCategory, String eTitle, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
             Essay essayEntity = essayOptional.get();
@@ -70,7 +69,6 @@ public class EssayService {
             if (essayEntity.getUser().getUserId() == userId) {
                 essayEntity.setEContent(eContent);
                 essayEntity.setECategory(eCategory.toLowerCase());
-                essayEntity.setOpenable(openable);
                 essayEntity.setETitle(eTitle);
 
                 return essayRepository.save(essayEntity);
@@ -129,13 +127,14 @@ public class EssayService {
 
     public List<Essay> findAllLikedEssays(int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return new ArrayList<>(user.getLikedEssays());
+        return user.getLikedEssays().stream().distinct().collect(Collectors.toList());
     }
 
 
     //카테고리순 나열 poem, novel, whisper있음
     public Page<Essay> findEssaysByCategory(String category, Pageable pageable) {
         return essayRepository.findEssaysByCategory(category, pageable);
+
     }
 
     public List<Essay> findAllEssaysBySubscribedUsers(int userId) {
@@ -148,6 +147,7 @@ public class EssayService {
             List<Essay> subscribedUserEssays = essayRepository.findByUser(subscribedUser);
             essays.addAll(subscribedUserEssays);
         }
+        essays = essays.stream().distinct().collect(Collectors.toList());
         return essays;
     }
 
