@@ -125,16 +125,10 @@ public class EssayService {
         return false;
     }
 
-
-    /*public List<Essay> findAllLikedEssays(int userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return user.getLikedEssays().stream().distinct().collect(Collectors.toList());
-    }*/
-
     public Page<Essay> findAllLikedEssays(int userId, Pageable pageable) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         List<Essay> likedEssays = user.getLikedEssays().stream().distinct().collect(Collectors.toList());
-        return toPage(likedEssays, pageable); // 주석: 리스트를 페이지로 변환
+        return toPage(likedEssays, pageable);
     }
 
     //카테고리순 나열 poem, novel, whisper있음
@@ -142,17 +136,17 @@ public class EssayService {
         return essayRepository.findEssaysByCategory(category, pageable);
     }
 
-    
+
     public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         List<UserSubscribe> subscriptions = userSubscribeRepository.findByUserId(userId);
         List<Essay> essays = new ArrayList<>();
 
         for (UserSubscribe subscription : subscriptions) {
-            User subscribedUser = userRepository.findById(subscription.getFollowingId()).orElseThrow(() -> new RuntimeException("Subscribed user not found"));
-            List<Essay> subscribedUserEssays = essayRepository.findByUser(subscribedUser);
-            essays.addAll(subscribedUserEssays);
+            Page<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId(), pageable);
+            essays.addAll(subscribedUserEssays.getContent());
         }
+
         List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
         return toPage(distinctEssays, pageable);
     }
