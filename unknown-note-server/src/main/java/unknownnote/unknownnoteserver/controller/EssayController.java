@@ -78,6 +78,7 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                    essayInfo.put("elikes", essay.getELikes());
 
                     User user = essay.getUser();
                     Map<String, Object> userInfo = new HashMap<>();
@@ -108,6 +109,7 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                    essayInfo.put("elikes", essay.getELikes());
 
                     User user = essay.getUser();
                     Map<String, Object> userInfo = new HashMap<>();
@@ -139,6 +141,7 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                    essayInfo.put("elikes", essay.getELikes());
 
                     User user = essay.getUser();
                     Map<String, Object> userInfo = new HashMap<>();
@@ -169,6 +172,7 @@ public class EssayController {
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
                     essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                    essayInfo.put("elikes", essay.getELikes());
 
                     User user = essay.getUser();
                     Map<String, Object> userInfo = new HashMap<>();
