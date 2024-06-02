@@ -42,14 +42,14 @@ public class MyProfileService {
 
     public MyProfileResponse getMyProfileInfo(int userId, int otherUserId, boolean meWatchingMyProfile) {
         //유저 할당
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(otherUserId).orElseThrow(() -> new RuntimeException("User not found"));
         //일기, 수필 개수 할당
-        int essayCount = essayRepository.countByUserId(userId);
-        int diaryCount = diaryRepository.countByUserId(userId);
+        int essayCount = essayRepository.countByUserId(otherUserId);
+        int diaryCount = diaryRepository.countByUserId(otherUserId);
         //이달의 감정 통계 할당
-        Monthly_emo monthly_emo = diaryService.getPreviousMonthEmotions(userId);
+        Monthly_emo monthly_emo = diaryService.getPreviousMonthEmotions(otherUserId);
         //이달의 꽃 할당
-        String flowerTag = diaryService.findMostFrequentTag(userId);
+        String flowerTag = diaryService.findMostFrequentTag(otherUserId);
         String flower;
         if(flowerTag.equals("happy"))
             flower = "happy";
@@ -70,21 +70,21 @@ public class MyProfileService {
         else
             flower = "happy";
 
-        List<MonthlyActivity> activities = getMonthlyActivities(userId);
-        List<RecentGraph> recentGraphs = getRecentGraphData(userId);
+        List<MonthlyActivity> activities = getMonthlyActivities(otherUserId);
+        List<RecentGraph> recentGraphs = getRecentGraphData(otherUserId);
 
         String directoryPath = "./uploads/";
-        String jpgFilePath = directoryPath + userId + ".jpg";
-        String pngFilePath = directoryPath + userId + ".png";
+        String jpgFilePath = directoryPath + otherUserId + ".jpg";
+        String pngFilePath = directoryPath + otherUserId + ".png";
         String img_name;
         String img_file;
 
         // 파일 존재 여부 확인
         if (Files.exists(Paths.get(jpgFilePath))) {
-            img_name = userId + ".jpg";
+            img_name = otherUserId + ".jpg";
             img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
         } else if (Files.exists(Paths.get(pngFilePath))) {
-            img_name = userId + ".png";
+            img_name = otherUserId + ".png";
             img_file = "http://13.48.223.79:8080/profile/files/" + img_name;
         } else {
             img_file = "";
