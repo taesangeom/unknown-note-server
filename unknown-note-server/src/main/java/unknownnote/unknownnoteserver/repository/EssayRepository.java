@@ -14,11 +14,8 @@ import java.util.List;
 public interface EssayRepository extends JpaRepository<Essay, Integer> {
     @Query("SELECT COUNT(e) FROM Essay e WHERE e.user.userId = :userId")
     int countByUserId(@Param("userId") int userId);
-
     List<Essay> findByUser_UserIdAndEssayTimeBetween(int userId, Timestamp start, Timestamp end);
-
     List<Essay> findByUser(User user);
-
     @Query("SELECT DISTINCT e FROM Essay e WHERE e.user.userId = :userId")
     Page<Essay> findByUser_UserId(@Param("userId") int userId, Pageable pageable);
 
