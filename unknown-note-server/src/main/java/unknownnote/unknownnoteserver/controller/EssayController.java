@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.service.ErrorService;
@@ -46,7 +47,8 @@ public class EssayController {
     @GetMapping
     public ResponseEntity<Object> getEssays(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                             @RequestParam(required = false) String category,
-                                            @RequestParam(required = false) Integer page) {
+                                            @RequestParam(required = false) Integer page,
+                                            Pageable pageable) {
         String token;
         if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
             token = jwtToken.replace("Bearer ", "");
@@ -58,16 +60,17 @@ public class EssayController {
         try {
             userId = jwtService.getUserIdFromJwt(token);
         } catch (Exception e) {
-            return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+            return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
         }
 
         logger.debug("Querying essays with category: {}", category);
+
         if (category == null) {
-            Page<Essay> essaysPage = essayService.findUserEssays(userId, page == null ? 0 : page);
+            Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
             if (essaysPage != null && !essaysPage.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                response.put("message", "Fetched all essays");
+                //response.put("message", "Fetched all essays");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : essaysPage.getContent()) {
@@ -76,7 +79,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -85,14 +88,14 @@ public class EssayController {
                 response.put("data", essaysInfo);
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+                return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
             }
         } else if (category.equals("favs")) {
             List<Essay> likedEssays = essayService.findAllLikedEssays(userId);
             if (!likedEssays.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                response.put("message", "Fetched liked essays");
+                //response.put("message", "Fetched liked essays");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : likedEssays) {
@@ -101,7 +104,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -110,7 +113,7 @@ public class EssayController {
                 response.put("data", essaysInfo);
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+                return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
             }
         } else if (category.equals("subs")) {
             List<Essay> essays = essayService.findAllEssaysBySubscribedUsers(userId);
@@ -126,7 +129,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -135,14 +138,14 @@ public class EssayController {
                 response.put("data", essaysInfo);
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+                return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
             }
         } else if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
-            Page<Essay> essaysPage = essayService.findEssaysByCategory(category, page == null ? 0 : page);
+            Page<Essay> essaysPage = essayService.findEssaysByCategory(category.toLowerCase(), pageable);
             if (essaysPage != null && !essaysPage.isEmpty()) {
                 Map<String, Object> response = new HashMap<>();
                 response.put("code", 1000);
-                response.put("message", "Successfully fetched essays by category");
+                //response.put("message", "Successfully fetched essays by category");
 
                 List<Map<String, Object>> essaysInfo = new ArrayList<>();
                 for (Essay essay : essaysPage.getContent()) {
@@ -151,7 +154,7 @@ public class EssayController {
                     essayInfo.put("etitle", essay.getETitle());
                     essayInfo.put("econtent", essay.getEContent());
                     essayInfo.put("etime", essay.getEssayTime());
-                    essayInfo.put("ecategory", essay.getECategory());
+                    essayInfo.put("ecategory", essay.getECategory().toLowerCase());
                     essayInfo.put("userid", essay.getUser().getUserId());
                     essayInfo.put("openable", essay.getOpenable());
                     essaysInfo.add(essayInfo);
@@ -160,11 +163,67 @@ public class EssayController {
                 response.put("data", essaysInfo);
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+                return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("{\"code\": 1003, \"message\": \"Invalid type parameter\"}");
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Object> getUserEssays(@PathVariable int userId, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                                                                    @RequestParam(required = false) String category,
+                                                                                    @RequestParam(required = false) Integer page,
+                                                                                     Pageable pageable)
+    {
+        try {
+            String token;
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                token = jwtToken.replace("Bearer ", "");
+            } else {
+                token = jwtToken;
+            }
+
+        Page<Essay> essaysPage = essayService.findUserEssays(userId, pageable);
+        if (essaysPage != null && !essaysPage.isEmpty()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1000);
+
+            List<Map<String, Object>> essaysInfo = new ArrayList<>();
+            for (Essay essay : essaysPage.getContent()) {
+                Map<String, Object> essayInfo = new HashMap<>();
+                essayInfo.put("essayid", essay.getEssayId());
+                essayInfo.put("etitle", essay.getETitle());
+                essayInfo.put("econtent", essay.getEContent());
+                essayInfo.put("etime", essay.getEssayTime());
+                essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+
+                User user = essay.getUser();
+                Map<String, Object> userInfo = new HashMap<>();
+                userInfo.put("user_id", user.getUserId());
+                userInfo.put("nickname", user.getNickname());
+                userInfo.put("introduction", user.getIntroduction());
+
+                essayInfo.put("user", userInfo);
+                essaysInfo.add(essayInfo);
+            }
+
+            response.put("data", essaysInfo);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 실패"));
+        }
+        } catch (IllegalStateException e) {
+            logger.error("jwtToken is not in proper form / Outdated", e);
+            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
+        } catch (JwtException e) {
+            logger.error("Error during Decoding Token", e);
+            return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 해석 오류"));
+        } catch (Exception e) {
+            logger.error("Unexpected exception occurred while loading essays", e);
+            return ResponseEntity.ok(errorService.setError(4000, "에세이 불러오기 중 예상치 못한 에러 발생"));
         }
     }
 
@@ -182,28 +241,27 @@ public class EssayController {
 
             Essay savedEssay = essayService.saveNewEssay(essayDTO, userId);
             if (savedEssay != null) {
-                return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay saved\"}");
+                Map<String, Object> response = new HashMap<>();
+                response.put("code", 1000);
+                response.put("message", "일기 저장 완료");
+                return ResponseEntity.ok().body(response);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\"code\": 1003, \"message\": \"Essay saving failed\"}");
+                return ResponseEntity.ok(errorService.setError(1003,"에세이 저장 실패"));
             }
-        } catch (IllegalStateException e) {
+        } catch(IllegalStateException e){
             logger.error("jwtToken is not in proper form / Outdated", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 2000, \"message\": \"JwtToken is not in proper form / Outdated\"}");
-        } catch (JwtException e) {
-            logger.error("Error during Decoding Token", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 2000, \"message\": \"Error during Decoding Token\"}");
-        } catch (RuntimeException e) {
-            logger.error("Unexpected Error during saveNewEssay()", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 1003, \"message\": \" Unexpected Error during saveNewEssay()\"}");
-        } catch (Exception e) {
-            logger.error("Unexpected error during saving essay", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 4000, \"message\": \"Unexpected error during saving essay\"}");
+            return ResponseEntity.ok(errorService.setError(2000,"jwt 토큰 형식 오류"));
+        }catch(JwtException e){
+            logger.error("Error during Decoding Token", e); // 예외 발생 시 로깅
+            return ResponseEntity.ok(errorService.setError(2000,"토큰 해석중 오류 발생"));
+        } catch(RuntimeException e){
+            logger.error("Unexpected Error during SaveNewDiary()", e);
+            return ResponseEntity.ok(errorService.setError(1006,"서비스 에세이 저장 함수에서 예상치 못한 에러발생"));
+        }catch(Exception e){
+            logger.error("Unexpected error during saving diary", e);
+            return ResponseEntity.ok(errorService.setError(4000,"에세이 저장 중 예상치 못한 에러 발생"));
         }
+
     }
 
     @PatchMapping
@@ -229,23 +287,22 @@ public class EssayController {
 
             Essay updatedEssay = essayService.updateEssay(essayId, eContent, eCategory, eTitle, openable , userId);
             if (updatedEssay != null) {
-                return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Essay updated successfully\"}");
+                Map<String, Object> response = new HashMap<>();
+                response.put("code", 1000);
+                response.put("message", "에세이 패치 완료");
+                return ResponseEntity.ok().body(response);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\"code\": 1003, \"message\": \"Essay update failed\"}");
+                return ResponseEntity.ok(errorService.setError(1003,"에세이 업데이트 실패"));
             }
-        } catch (IllegalStateException e) {
-            logger.error("jwtToken is not in proper form / Outdated", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 2000, \"message\": \"JwtToken is not in proper form / Outdated\"}");
-        } catch (JwtException e) {
-            logger.error("Error during Decoding Token", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 2000, \"message\": \"Error during Decoding Token\"}");
-        } catch (Exception e) {
-            logger.error("Unexpected error during updateEssay()", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"code\": 4000, \"message\": \"Unexpected error during updating essay\"}");
+        } catch(IllegalStateException e){
+            logger.error("jwtToken is not in proper form / Outdated", e); // 예외 발생 시 로깅
+            return ResponseEntity.ok(errorService.setError(2000,"jwt 토큰 형식 오류"));
+        }catch(JwtException e){
+            logger.error("Error during Decoding Token", e); // 예외 발생 시 로깅
+            return ResponseEntity.ok(errorService.setError(2000,"jwt 토큰 해석 오류"));
+        } catch(Exception e){
+            logger.error("Unexpected error during changediary()", e); // 예외 발생 시 로깅
+            return ResponseEntity.ok(errorService.setError(4000,"에세이 패치 중 예상치 못한 에러발생"));
         }
     }
 
@@ -254,10 +311,12 @@ public class EssayController {
         int userId = jwtService.getUserIdFromJwt(jwtToken);
         Essay essay = essayService.addLike(essayId, userId);
         if (essay != null) {
-            return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully added like\"}");
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1000);
+            response.put("message", "Successfully add like");
+            return ResponseEntity.ok().body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1003, \"message\": \"Failed to add like\"}");
+            return ResponseEntity.ok().body(errorService.setError(1008, "Failed to add like"));
         }
     }
 
@@ -266,44 +325,12 @@ public class EssayController {
         int userId = jwtService.getUserIdFromJwt(jwtToken);
         boolean success = essayService.removeLike(essayId, userId);
         if (success) {
-            return ResponseEntity.ok().body("{\"code\": 1000, \"message\": \"Successfully removed like\"}");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("{\"code\": 1003, \"message\": \"Failed to remove like\"}");
-        }
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<Object> getUserEssays(@PathVariable int userId, @RequestParam Optional<Integer> page) {
-        Page<Essay> essaysPage = essayService.findUserEssays(userId, page.orElse(0));
-        if (essaysPage != null && !essaysPage.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("code", 1000);
-
-            List<Map<String, Object>> essaysInfo = new ArrayList<>();
-            for (Essay essay : essaysPage.getContent()) {
-                Map<String, Object> essayInfo = new HashMap<>();
-                essayInfo.put("essayid", essay.getEssayId());
-                essayInfo.put("etitle", essay.getETitle());
-                essayInfo.put("econtent", essay.getEContent());
-                essayInfo.put("etime", essay.getEssayTime());
-                essayInfo.put("ecategory", essay.getECategory());
-
-                User user = essay.getUser();
-                Map<String, Object> userInfo = new HashMap<>();
-                userInfo.put("user_id", user.getUserId());
-                userInfo.put("nickname", user.getNickname());
-                userInfo.put("introduction", user.getIntroduction());
-
-                essayInfo.put("user", userInfo);
-                essaysInfo.add(essayInfo);
-            }
-
-            response.put("data", essaysInfo);
-
-            return ResponseEntity.ok(response);
+            response.put("message", "Successfully removed like");
+            return ResponseEntity.ok().body(response);
         } else {
-            return ResponseEntity.ok(errorService.setError(1005, "에세이 불러오기 실패"));
+            return ResponseEntity.ok().body(errorService.setError(1008, "Failed to remove like"));
         }
     }
 }
