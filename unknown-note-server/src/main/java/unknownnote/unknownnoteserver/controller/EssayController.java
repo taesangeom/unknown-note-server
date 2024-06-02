@@ -135,7 +135,7 @@ public class EssayController {
                 token = jwtToken;
             }
 
-            userId = jwtService.getUserIdFromJwt(token);
+            int jwtUserId = jwtService.getUserIdFromJwt(token);
 
         Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정 해줌, size는 FE에서 설정.
 
