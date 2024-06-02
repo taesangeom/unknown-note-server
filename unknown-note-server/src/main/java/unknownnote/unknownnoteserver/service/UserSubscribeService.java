@@ -14,10 +14,8 @@ public class UserSubscribeService {
     @Autowired
     private UserSubscribeRepository userSubscribeRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserSubscribeService.class);
 
     public void subscribe(int targetUserId, int userId) {
-        logger.info("User {} subscribing to user {}", userId, targetUserId);
 
         UserSubscribe userSubscribe = new UserSubscribe();
         userSubscribe.setUserId(targetUserId); // targetUserId를 userId로 설정함
@@ -25,15 +23,12 @@ public class UserSubscribeService {
 
         userSubscribeRepository.save(userSubscribe);
 
-        logger.info("User {} successfully subscribed to user {}", userId, targetUserId);
     }
 
     @Transactional
     public void unsubscribe(int userId, int followingId) {
-        logger.info("User {} unsubscribing from user {}", userId, followingId);
 
         userSubscribeRepository.deleteByUserIdAndFollowingId(userId, followingId);
 
-        logger.info("User {} successfully unsubscribed from user {}", userId, followingId);
     }
 }

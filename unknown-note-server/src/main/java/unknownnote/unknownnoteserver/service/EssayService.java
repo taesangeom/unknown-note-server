@@ -139,32 +139,23 @@ public class EssayService {
 
 
     public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
-        logger.info("Finding all essays by subscribed users for userId: {}", userId);
 
         // 유저 존재 여부 확인
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         // 구독 목록 가져오기
         List<UserSubscribe> subscriptions = userSubscribeRepository.findByFollowingId(userId); // followingId로 변경 (수정된 부분)
-        logger.info("Subscriptions found for userId {}: {}", userId, subscriptions);
 
         List<Essay> essays = new ArrayList<>();
 
         // 각 구독한 유저의 에세이 가져오기
         for (UserSubscribe subscription : subscriptions) {
-            logger.info("Finding essays for subscribed userId: {}", subscription.getUserId()); // userId로 변경 (수정된 부분)
             List<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId()); // userId로 변경 (수정된 부분)
-            logger.info("Essays found for userId {}: {}", subscription.getUserId(), subscribedUserEssays);
             essays.addAll(subscribedUserEssays);
-        }
-
-        if (essays.isEmpty()) {
-            logger.warn("No essays found for any subscribed users for userId: {}", userId);
         }
 
         // 중복 제거 및 페이지 변환
         List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
-        logger.info("Distinct essays found: {}", distinctEssays);
         return toPage(distinctEssays, pageable);
     }
 
