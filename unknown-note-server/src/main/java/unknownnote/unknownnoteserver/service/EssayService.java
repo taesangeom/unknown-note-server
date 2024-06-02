@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import  org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import unknownnote.unknownnoteserver.dto.EssayDTO;
@@ -125,19 +126,24 @@ public class EssayService {
     }
 
 
-    public List<Essay> findAllLikedEssays(int userId) {
+    /*public List<Essay> findAllLikedEssays(int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return user.getLikedEssays().stream().distinct().collect(Collectors.toList());
-    }
+    }*/
 
+    public Page<Essay> findAllLikedEssays(int userId, Pageable pageable) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Essay> likedEssays = user.getLikedEssays().stream().distinct().collect(Collectors.toList());
+        return toPage(likedEssays, pageable); // 주석: 리스트를 페이지로 변환
+    }
 
     //카테고리순 나열 poem, novel, whisper있음
     public Page<Essay> findEssaysByCategory(String category, Pageable pageable) {
         return essayRepository.findEssaysByCategory(category, pageable);
-
     }
 
-    public List<Essay> findAllEssaysBySubscribedUsers(int userId) {
+    
+    public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         List<UserSubscribe> subscriptions = userSubscribeRepository.findByUserId(userId);
         List<Essay> essays = new ArrayList<>();
@@ -147,8 +153,15 @@ public class EssayService {
             List<Essay> subscribedUserEssays = essayRepository.findByUser(subscribedUser);
             essays.addAll(subscribedUserEssays);
         }
-        essays = essays.stream().distinct().collect(Collectors.toList());
-        return essays;
+        List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
+        return toPage(distinctEssays, pageable);
+    }
+
+    private Page<Essay> toPage(List<Essay> list, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+        List<Essay> subList = list.subList(start, end);
+        return new PageImpl<>(subList, pageable, list.size());
     }
 
     public Page<Essay> findUserEssays(int userId, Pageable pageable) {
