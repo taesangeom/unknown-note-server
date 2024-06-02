@@ -18,6 +18,7 @@ import unknownnote.unknownnoteserver.entity.User;
 import unknownnote.unknownnoteserver.jwt.*;
 
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +69,7 @@ public class EssayController {
             } else if (category.equals("favs")) {
                 essaysPage = essayService.findAllLikedEssays(userId, pageable);
             } else if (category.equals("subs")) {
-                logger.info("Finding essays for category 'subs' for userId: {}", userId);
                 essaysPage = essayService.findAllEssaysBySubscribedUsers(userId, pageable);
-                logger.info("Found essays for subscribed users: {}", essaysPage.getContent());
             } else if (category.equals("novel") || category.equals("poem") || category.equals("whisper")) {
                 essaysPage = essayService.findEssaysByCategory(category.toLowerCase(), pageable);
             } else {
