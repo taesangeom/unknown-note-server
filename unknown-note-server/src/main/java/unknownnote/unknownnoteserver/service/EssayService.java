@@ -153,10 +153,15 @@ public class EssayService {
 
         return essayRepository.findEssaysByUserIds(subscribedUserIds, pageable); // 수정된 부분
     }
-
     private Page<Essay> toPage(List<Essay> list, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        if (start > end) {
+            logger.error("Invalid page range: start ({}) > end ({})", start, end);
+            throw new IllegalArgumentException("Invalid page range");
+        }
+
         List<Essay> subList = list.subList(start, end);
         return new PageImpl<>(subList, pageable, list.size());
     }
