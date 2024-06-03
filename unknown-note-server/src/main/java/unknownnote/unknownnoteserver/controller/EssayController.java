@@ -59,7 +59,6 @@ public class EssayController {
 
             int userId = jwtService.getUserIdFromJwt(token);
 
-            logger.debug("Querying essays with category: {}", category);
 
             Pageable pageable = PageRequest.of(page == null ? 0 : page, size); // 페이징 설정
 
@@ -75,7 +74,7 @@ public class EssayController {
             } else {
                 return ResponseEntity.ok(errorService.setError(1006, "에세이가 없습니다"));
             }
-            return buildEssayResponse(essaysPage);
+            return buildEssayResponse(essaysPage, userId);
         } catch (IllegalStateException e) {
             logger.error("jwtToken is not in proper form / Outdated", e);
             return ResponseEntity.ok(errorService.setError(2000, "jwt 토큰 형식 오류"));
@@ -88,7 +87,7 @@ public class EssayController {
         }
     }
 
-    private ResponseEntity<Object> buildEssayResponse(Page<Essay> essaysPage) {
+    private ResponseEntity<Object> buildEssayResponse(Page<Essay> essaysPage, int userId) {
         if (essaysPage != null && !essaysPage.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("code", 1000);
@@ -102,6 +101,7 @@ public class EssayController {
                 essayInfo.put("etime", essay.getEssayTime());
                 essayInfo.put("ecategory", essay.getECategory().toLowerCase());
                 essayInfo.put("elikes", essay.getELikes());
+                essayInfo.put("liked", essayService.getLikedStatus(essay.getEssayId(), userId));
 
                 User user = essay.getUser();
                 Map<String, Object> userInfo = new HashMap<>();
@@ -112,7 +112,6 @@ public class EssayController {
                 essayInfo.put("user", userInfo);
                 essaysInfo.add(essayInfo);
             }
-
             response.put("data", essaysInfo);
             return ResponseEntity.ok(response);
         } else {
@@ -151,6 +150,7 @@ public class EssayController {
                 essayInfo.put("econtent", essay.getEContent());
                 essayInfo.put("etime", essay.getEssayTime());
                 essayInfo.put("ecategory", essay.getECategory().toLowerCase());
+                essayInfo.put("liked", essayService.getLikedStatus(essay.getEssayId(), jwtUserId));
 
                 User user = essay.getUser();
                 Map<String, Object> userInfo = new HashMap<>();
@@ -179,6 +179,7 @@ public class EssayController {
         return ResponseEntity.ok(errorService.setError(1006, "에세이 불러오기 중 예상치 못한 에러 발생"));
     }
     }
+
 
     @PostMapping
     public ResponseEntity<Object> saveEssay(@RequestBody EssayDTO essayDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken) {
