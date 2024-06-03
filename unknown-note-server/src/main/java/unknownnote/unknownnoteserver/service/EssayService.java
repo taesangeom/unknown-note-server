@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import  org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import unknownnote.unknownnoteserver.entity.Essay;
 import unknownnote.unknownnoteserver.entity.UserSubscribe;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import unknownnote.unknownnoteserver.dto.EssayDTO;
 import unknownnote.unknownnoteserver.entity.*;
 import unknownnote.unknownnoteserver.repository.*;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import unknownnote.unknownnoteserver.repository.UserSubscribeRepository;
@@ -31,6 +29,9 @@ public class EssayService {
 
     @Autowired
     private UserSubscribeRepository userSubscribeRepository;
+
+    @Autowired
+    private UserLikedEssayRepository userLikedEssayRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(EssayService.class);
 
@@ -85,46 +86,48 @@ public class EssayService {
         }
     }
 
+
     public Essay addLike(int essayId, int userId) {
         Optional<Essay> essayOptional = essayRepository.findById(essayId);
         if (essayOptional.isPresent()) {
             Essay essay = essayOptional.get();
             User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-            if (!user.getLikedEssays().contains(essay)) {
-                user.getLikedEssays().add(essay);
-                System.out.println("Adding like from essayId: " + essayId + " for userId: " + userId);
+            if (!userLikedEssayRepository.existsByUserIdAndEssayId(userId, essayId)) {
+                UserLikedEssay like = new UserLikedEssay();
+                like.setUserId(userId);
+                like.setEssayId(essayId);
+                userLikedEssayRepository.save(like);
+
                 essay.setELikes(essay.getELikes() + 1);
-                userRepository.save(user);
                 return essayRepository.save(essay);
             }
         }
         return null;
     }
 
+
+
     public boolean removeLike(int essayId, int userId) {
-        Optional<Essay> essayOptional = essayRepository.findById(essayId);
-        if (essayOptional.isPresent()) {
-            Essay essay = essayOptional.get();
-            Optional<User> userOptional = userRepository.findById(userId);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                if (user.getLikedEssays().remove(essay)) {
-                    System.out.println("Removing like from essayId: " + essayId + " for userId: " + userId);
-                    essay.setELikes(essay.getELikes() - 1);
-                    essayRepository.saveAndFlush(essay);
-                    userRepository.saveAndFlush(user);
-                    return true;
-                } else {
-                    System.err.println("Essay not found in user's liked list");
-                }
-            } else {
-                System.err.println("User not found");
-            }
-        } else {
-            System.err.println("Essay not found");
+        Optional<UserLikedEssay> likeOpt = userLikedEssayRepository.findById(new UserLikedEssayId(userId, essayId));
+        if (likeOpt.isPresent()) {
+            userLikedEssayRepository.delete(likeOpt.get());
+
+            Essay essay = essayRepository.findById(essayId).orElseThrow(() -> new RuntimeException("Essay not found"));
+            essay.setELikes(essay.getELikes() - 1);
+            essayRepository.save(essay);
+            return true;
         }
         return false;
+    }
+
+    public int getLikedStatus(int essayId, int userId) {
+        return userLikedEssayRepository.existsByUserIdAndEssayId(userId, essayId) ? 1 : 0;
+    }
+
+
+    public boolean isLikedByUser(int essayId, int userId) {
+        return userLikedEssayRepository.existsByUserIdAndEssayId(userId, essayId);
     }
 
     public Page<Essay> findAllLikedEssays(int userId, Pageable pageable) {
@@ -138,24 +141,6 @@ public class EssayService {
         return essayRepository.findEssaysByCategory(category, pageable);
     }
 
-
-   /* public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
-
-        userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<UserSubscribe> subscriptions = userSubscribeRepository.findByFollowingId(userId); // followingId로 변경 (수정된 부분)
-
-        List<Essay> essays = new ArrayList<>();
-
-        for (UserSubscribe subscription : subscriptions) {
-            List<Essay> subscribedUserEssays = essayRepository.findByUser_UserId(subscription.getUserId()); // userId로 변경 (수정된 부분)
-            essays.addAll(subscribedUserEssays);
-        }
-
-        // 중복 제거 및 페이지 변환
-        List<Essay> distinctEssays = essays.stream().distinct().collect(Collectors.toList());
-        return toPage(distinctEssays, pageable);
-    }*/
 
     public Page<Essay> findAllEssaysBySubscribedUsers(int userId, Pageable pageable) {
         userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
