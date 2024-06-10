@@ -31,9 +31,12 @@
 
 ### [3. 기술적 경험](#-기술적-경험)
 
+- [FE](#FE)
+- [BE](#BE)
+
 ### [4. 팀원 소개](#-팀원-소개)
 
-- [팀원 회고](#-팀원-회고)
+- [회고](#-회고)
 
 
 <br />
@@ -58,10 +61,18 @@
 
 ![기술 스택](https://github.com/DU-E/unknown-note-server/assets/66457014/6e3e79ad-67dd-4f14-8165-75517dd57fa4)
 
+- 작성중...
+
 <br />
 
 # 📖 기술적 경험
+
+## FE
 - 작성중...
+
+## BE
+- 작성중...
+
 
 <br />
 
@@ -70,19 +81,19 @@
 <table >
   <tr height="130px">
     <td align="center" width="130px">
-      <a href="https://github.com/wjlee611"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/63613774-e9bf-4fc0-8299-677b3fa17136" style="border-radius:50%"/></a>
+      <a href="https://github.com/wjlee611"><img src="https://avatars.githubusercontent.com/u/66172061?v=4" style="border-radius:50%"/></a>
     </td>
     <td align="center" width="130px">
-      <a href="https://github.com/tony7078"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/1c2b7451-bb8c-4562-bf6d-98b9d22a7ac1" style="border-radius:50%" /></a>
+      <a href="https://github.com/tony7078"><img src="https://avatars.githubusercontent.com/u/64863514?v=4" style="border-radius:50%" /></a>
     </td>
     <td align="center" width="130px">
-      <a href="https://github.com/taesangeom"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/a3b72f04-901a-4660-8c0a-0475cfc0127a" style="border-radius:50%"/></a>
+      <a href="https://github.com/taesangeom"><img src="https://avatars.githubusercontent.com/u/113084809?v=4" style="border-radius:50%"/></a>
     </td>
     <td align="center" width="130px">
-      <a href="https://github.com/minibr"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/33be9eaa-1dca-49a1-8388-b738c7ad7ba2" style="border-radius:50%"/></a>
+      <a href="https://github.com/minibr"><img src="https://avatars.githubusercontent.com/u/112764586?v=4" style="border-radius:50%"/></a>
     </td>
 <td align="center" width="130px">
-      <a href="https://github.com/cjh-19"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/189a27de-2794-4486-8f7e-8154dcee56d0" style="border-radius:50%"/></a>
+      <a href="https://github.com/cjh-19"><img src="https://avatars.githubusercontent.com/u/66457014?v=4" style="border-radius:50%"/></a>
     </td>
   </tr>
   <tr height="50px">
@@ -106,10 +117,9 @@
 
 <br />
 
-### 🔥 팀원 회고
+### 🔥 회고
 - 작성중...
 
 <br />
-
 
 ### 작성중...
