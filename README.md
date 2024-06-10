@@ -31,7 +31,7 @@
 
 ### [3. 기술적 경험]
 
-### [4. 팀원 소개]
+### [4. 팀원 소개](-팀원-소개)
 
 ### [5. 팀원 회고]
 
@@ -56,6 +56,47 @@
 # ⚒️ 기술 스택
 
 ![기술 스택](https://github.com/DU-E/unknown-note-server/assets/66457014/6e3e79ad-67dd-4f14-8165-75517dd57fa4)
+
+<br />
+
+# 🐧 팀원 소개
+
+<table >
+  <tr height="130px">
+    <td align="center" width="130px">
+      <a href="https://github.com/wjlee611"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/c67ec60a-7a8c-4fc7-88b0-80d446c6c5c1" style="border-radius:50%"/></a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/tony7078"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/c67ec60a-7a8c-4fc7-88b0-80d446c6c5c1" style="border-radius:50%" /></a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/taesangeom"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/c67ec60a-7a8c-4fc7-88b0-80d446c6c5c1" style="border-radius:50%"/></a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/minibr"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/c67ec60a-7a8c-4fc7-88b0-80d446c6c5c1" style="border-radius:50%"/></a>
+    </td>
+<td align="center" width="130px">
+      <a href="https://github.com/cjh-19"><img src="https://github.com/DU-E/unknown-note-server/assets/66457014/c67ec60a-7a8c-4fc7-88b0-80d446c6c5c1" style="border-radius:50%"/></a>
+    </td>
+  </tr>
+  <tr height="50px">
+    <td align="center" width="130px">
+      <a href="https://github.com/wjlee611">FE 이웅재</a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/tony7078">BE 이동규</a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/taesangeom">BE 엄태상</a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/minibr">BE 박민형</a>
+    </td>
+    <td align="center" width="130px">
+      <a href="https://github.com/cjh-19">BE 최지훈</a>
+    </td>
+  </tr>
+</table>
 
 <br />
 
