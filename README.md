@@ -60,6 +60,10 @@
 
 ## <감정의 숲> 앱 기능 설명
 
+### [소셜로그인] & [일기 캘린더]
+<img src="https://github.com/DU-E/unknown-note-server/assets/66457014/3b58f870-66fa-4c6c-a01b-3afd9699e8c9" alt="소셜 로그인" width="30%" height="30%">
+<img src="https://github.com/DU-E/unknown-note-server/assets/66457014/432a4788-48ef-4367-b034-1c4b1dc8855c" alt="일기 캘린더" width="30%" height="30%">
+
 - 작성중...
 
 <br />
